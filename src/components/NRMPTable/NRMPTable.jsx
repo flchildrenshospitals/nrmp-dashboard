@@ -7,25 +7,36 @@ export default function NRMPTable() {
   const [rows, setRows] = useState([]);
 
   useEffect(() => {
+    console.log("Fetching:", CSV_URL);
     fetch(CSV_URL)
       .then((r) => r.text())
       .then((text) => {
+        console.log("Raw text:", text.slice(0, 200)); // Only first 200 chars for brevity
         const lines = text.trim().split("\n").filter(Boolean);
-        if (lines.length === 0) return;
+        if (lines.length === 0) {
+          console.log("No lines found in CSV!");
+          return;
+        }
         const rawHeaders = lines[0].split(",");
         setHeaders(rawHeaders.map(h => h.trim()));
         setRows(
           lines.slice(1).map(line => {
-            // If trailing empty columns, pad with empty strings
             const cells = line.split(",");
             while (cells.length < rawHeaders.length) cells.push("");
             return cells;
           })
         );
+        console.log("Headers:", rawHeaders);
+        console.log("First row:", lines[1]);
+      })
+      .catch(err => {
+        console.error("Fetch or parse error:", err);
       });
   }, []);
 
-  if (!rows.length) return <div>Loading table...</div>;
+  if (!rows.length) {
+    return <div>Loading table...</div>;
+  }
 
   return (
     <div style={{ overflowX: "auto", background: "#fff", borderRadius: 8, boxShadow: "0 2px 4px rgba(0,0,0,0.08)", padding: 16 }}>
