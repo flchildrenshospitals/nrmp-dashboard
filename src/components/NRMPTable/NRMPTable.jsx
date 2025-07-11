@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Papa from "papaparse";
 import "./NRMPTable.css";
 
-const CSV_URL = "/NRMP_2020_2025_Main_and_Specialty.csv";
+const CSV_URL = `${import.meta.env.BASE_URL}NRMP_2020_2025_Main_and_Specialty.csv`;
 
 export default function NRMPTable() {
   const [data, setData] = useState([]);
