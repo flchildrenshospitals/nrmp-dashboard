@@ -39,25 +39,31 @@ export default function NRMPTable() {
   }
 
   return (
-    <div style={{ overflowX: "auto", background: "#fff", borderRadius: 8, boxShadow: "0 2px 4px rgba(0,0,0,0.08)", padding: 16 }}>
-      <table>
-        <thead>
-          <tr>
-            {headers.map((col, i) => (
-              <th key={i}>{col}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map((row, i) => (
-            <tr key={i}>
-              {row.map((cell, j) => (
-                <td key={j}>{cell}</td>
+    <div>
+      <div style={{margin: 20, color: "red"}}>I am the NRMP Table!</div>
+      <div style={{
+        overflowX: "auto", background: "#fff", borderRadius: 8,
+        boxShadow: "0 2px 4px rgba(0,0,0,0.08)", padding: 16
+      }}>
+        <table border="1">
+          <thead>
+            <tr>
+              {headers.map((col, i) => (
+                <th key={i}>{col}</th>
               ))}
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {rows.map((row, i) => (
+              <tr key={i}>
+                {row.map((cell, j) => (
+                  <td key={j}>{cell}</td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
