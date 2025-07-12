@@ -13,6 +13,8 @@
   },
   "dependencies": {
     "gh-pages": "^6.3.0",
+    "nouislider": "^15.8.1",
+    "nouislider-react": "^3.4.2",
     "papaparse": "^5.5.3",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"

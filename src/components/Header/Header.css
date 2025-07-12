@@ -1,0 +1,26 @@
+.dashboard-header {
+    background: linear-gradient(90deg, #003366 70%, #5683c6 100%);
+    color: #fff;
+    padding: 36px 0 18px 0;
+    text-align: center;
+    border-radius: 12px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+  }
+  
+  .dashboard-header h1 {
+    margin: 0;
+    font-size: 2.3rem;
+    letter-spacing: 1.5px;
+    font-weight: 800;
+  }
+  
+  .dashboard-tagline {
+    margin: 0;
+    font-size: 1.1rem;
+    color: #f3f6fa;
+    opacity: 0.88;
+    font-weight: 400;
+    letter-spacing: 0.3px;
+  }
+  
