@@ -28,10 +28,50 @@ export default function NRMPTable({ yearRange }) {
     yearCols.push(`${y} Quota`, `${y} Matched`);
   });
 
+  // Get base headers (non-year columns)
   const baseHeaders = headers.filter(
     h => !h.match(/^\d{4} (Quota|Matched)$/)
   );
-  const visibleHeaders = [...baseHeaders, ...yearCols];
+
+  // Debug: log headers to see what we're working with
+  console.log("Base headers:", baseHeaders);
+  
+  // Find the index of PROGRAM CODE column (try different possible names)
+  let programCodeIndex = baseHeaders.findIndex(h => h === "PROGRAM CODE");
+  if (programCodeIndex === -1) {
+    programCodeIndex = baseHeaders.findIndex(h => h.includes("PROGRAM") && h.includes("CODE"));
+  }
+  if (programCodeIndex === -1) {
+    programCodeIndex = baseHeaders.findIndex(h => h.toLowerCase().includes("program") && h.toLowerCase().includes("code"));
+  }
+  
+  console.log("Program code index:", programCodeIndex);
+  console.log("Program code column:", baseHeaders[programCodeIndex]);
+  
+  // Create headers with summary columns inserted after PROGRAM CODE
+  let visibleHeaders;
+  if (programCodeIndex !== -1) {
+    const beforeProgramCode = baseHeaders.slice(0, programCodeIndex + 1);
+    const afterProgramCode = baseHeaders.slice(programCodeIndex + 1);
+    const summaryHeaders = ["SOLICITED", "MATCHED"];
+    visibleHeaders = [...beforeProgramCode, ...summaryHeaders, ...afterProgramCode, ...yearCols];
+  } else {
+    // Fallback: if PROGRAM CODE not found, add summary columns at the end of base headers
+    console.warn("PROGRAM CODE column not found, adding summary columns at end of base headers");
+    const summaryHeaders = ["SOLICITED", "MATCHED"];
+    visibleHeaders = [...baseHeaders, ...summaryHeaders, ...yearCols];
+  }
+
+  // Function to calculate summary values for a row
+  const calculateSummary = (row, type) => {
+    let total = 0;
+    inRangeYears.forEach(year => {
+      const colName = `${year} ${type}`;
+      const value = parseInt(row[colName] || 0, 10);
+      total += value;
+    });
+    return total;
+  };
 
   return (
     <div className="nrmp-table-container">
@@ -46,9 +86,15 @@ export default function NRMPTable({ yearRange }) {
         <tbody>
           {data.map((row, i) => (
             <tr key={i}>
-              {visibleHeaders.map((col) => (
-                <td key={col}>{row[col]}</td>
-              ))}
+              {visibleHeaders.map((col) => {
+                if (col === "SOLICITED") {
+                  return <td key={col} className="summary-column">{calculateSummary(row, "Quota").toLocaleString()}</td>;
+                } else if (col === "MATCHED") {
+                  return <td key={col} className="summary-column">{calculateSummary(row, "Matched").toLocaleString()}</td>;
+                } else {
+                  return <td key={col}>{row[col]}</td>;
+                }
+              })}
             </tr>
           ))}
         </tbody>

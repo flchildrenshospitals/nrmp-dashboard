@@ -55,6 +55,23 @@
   border-bottom: none;
 }
 
+/* Summary column styling */
+.summary-column {
+  background-color: #e8f4f8 !important;
+  font-weight: 600;
+  color: #003366;
+  border-left: 2px solid #003366;
+  border-right: 2px solid #003366;
+}
+
+.nrmp-table tr:nth-child(even) .summary-column {
+  background-color: #ddeef5 !important;
+}
+
+.nrmp-table tr:hover .summary-column {
+  background-color: #c7e3f0 !important;
+}
+
 @media (max-width: 650px) {
   .nrmp-table-container {
     padding: 10px 2px;
