@@ -1,46 +1,60 @@
 .nrmp-dashboard-container {
   display: flex;
   flex-direction: column;
+  margin: 40px auto;
+  padding: 0 60px;
+  width: 100%;
+  overflow-x: auto;
 }
 
 .dashboard-header-section {
-  width: 66.67%; /* Match the summary table width */
-  margin-bottom: 12px;
+  width: 100%;
+  margin-top: 10px;
 }
 
 .nrmp-tables-wrapper {
   display: flex;
   flex-direction: row;
-  gap: 30px;
-  margin: 0;
+  gap: 60px;
+  margin: 40px 0;
   align-items: flex-start;
-}
-
-.table-section {
-  flex: 1;
+  min-width: fit-content;
+  text-align: left;
+  justify-content: center;
 }
 
 .summary-section {
-  flex: 2;
-  min-width: 0;
+  flex: 0 0 auto;
+  min-width: fit-content;
 }
 
 .detailed-section {
-  flex: 1;
-  min-width: 0;
+  flex: 0 0 auto;
+  min-width: fit-content;
+  overflow-x: auto;
 }
 
 .table-title {
   font-size: 20px;
   font-weight: 700;
   color: #003366;
-  margin-bottom: 16px;
+  margin-bottom: 24px;
   padding-left: 8px;
   border-left: 4px solid #003366;
 }
 
-.summary-table-title {
-  text-align: center;
+/* Summary table container */
+.summary-section .nrmp-table-container {
+  width: 1500px;
+  min-width: 1500px;
+  max-width: 1500px;
+}
+
+/* Detailed table container */
+.detailed-section .nrmp-table-container {
+  width: 970px;
+  min-width: 970px;
+  max-width: 970px;
 }
 
 .nrmp-table-container {
@@ -48,10 +62,9 @@
   background: #f9fbfd;
   border-radius: 14px;
   box-shadow: 0 4px 20px rgba(0,0,0,0.09);
-  padding: 28px;
-  margin-bottom: 0;
+  padding: 40px;
+  margin-bottom: 20px;
   border: 1px solid #e1e6ec;
-  min-width: 340px;
 }
 
 .nrmp-table {
@@ -69,13 +82,14 @@
 .detailed-section .nrmp-table {
   width: auto;
   min-width: fit-content;
-  table-layout: fixed;
+  table-layout: auto;
 }
 
 /* Fixed width for summary table */
 .summary-section .nrmp-table {
-  table-layout: fixed;
-  width: 100%;
+  table-layout: auto;
+  width: auto;
+  min-width: fit-content;
 }
 
 .detailed-section .nrmp-table th,
