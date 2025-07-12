@@ -93,17 +93,18 @@ export default function YearSlider({ minYear, maxYear, value, onChange }) {
   return (
     <div style={{ 
       maxWidth: 500, 
-      margin: "24px auto 12px auto", 
+      margin: "68px auto 0px auto", 
       padding: "0 20px" 
     }}>
       <div 
         ref={sliderRef} 
-        style={{ marginBottom: "20px" }}
+        style={{ marginBottom: "0px" }}
       ></div>
       <div style={{ 
         textAlign: "center", 
         marginTop: 8, 
-        fontWeight: "bold" 
+        fontWeight: "bold",
+        fontSize: "14px"
       }}>
         <strong>Years:</strong> {value[0]} – {value[1]}
       </div>

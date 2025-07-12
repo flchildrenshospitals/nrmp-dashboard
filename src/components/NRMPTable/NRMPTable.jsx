@@ -98,7 +98,7 @@ export default function NRMPTable({ yearRange, headerComponent, sliderComponent 
       <div className="nrmp-tables-wrapper">
         {/* Summary Table */}
         <div className="table-section summary-section">
-          <h3 className="table-title">Summary ({yearRange[0]} - {yearRange[1]})</h3>
+          <h3 className="table-title summary-table-title">NRMP Data for All Specialties ({yearRange[0]} - {yearRange[1]})</h3>
           <div className="nrmp-table-container">
             <table className="nrmp-table">
               <thead>
