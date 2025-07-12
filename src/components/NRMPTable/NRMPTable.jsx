@@ -28,9 +28,10 @@ export default function NRMPTable({ yearRange, headerComponent, sliderComponent 
     yearCols.push(`${y} Quota`, `${y} Matched`);
   });
 
-  // Get base headers (non-year columns)
+  // Get base headers (non-year columns) and exclude unwanted columns
+  const columnsToHide = ["Sponsoring Institution", "City", "Specialty"];
   const baseHeaders = headers.filter(
-    h => !h.match(/^\d{4} (Quota|Matched)$/)
+    h => !h.match(/^\d{4} (Quota|Matched)$/) && !columnsToHide.includes(h)
   );
 
   // Find the index of PROGRAM CODE column (try different possible names)
@@ -103,9 +104,19 @@ export default function NRMPTable({ yearRange, headerComponent, sliderComponent 
             <table className="nrmp-table">
               <thead>
                 <tr>
-                  {summaryHeaders.map((col) => (
-                    <th key={col} className={col === "SOLICITED" || col === "MATCHED" ? "summary-column-header" : ""}>{col}</th>
-                  ))}
+                  {summaryHeaders.map((col) => {
+                    // Clean up column names for display
+                    let displayName = col;
+                    if (col === "Sponsoring Institution Cleaned") displayName = "SPONSORING INSTITUTION";
+                    if (col === "City Cleaned") displayName = "CITY";
+                    if (col === "Specialty Cleaned") displayName = "SPECIALTY";
+                    
+                    return (
+                      <th key={col} className={col === "SOLICITED" || col === "MATCHED" ? "summary-column-header" : ""}>
+                        {displayName}
+                      </th>
+                    );
+                  })}
                 </tr>
               </thead>
               <tbody>
