@@ -1,24 +1,7 @@
-import React, { useEffect, useState } from "react";
-import Papa from "papaparse";
+import React from "react";
 import "./NRMPTable.css";
 
-const CSV_URL = `${import.meta.env.BASE_URL}NRMP_2020_2025_Main_and_Specialty.csv`;
-
-export default function NRMPTable({ yearRange, headerComponent, sliderComponent }) {
-  const [data, setData] = useState([]);
-  const [headers, setHeaders] = useState([]);
-
-  useEffect(() => {
-    Papa.parse(CSV_URL, {
-      download: true,
-      header: true,
-      complete: (results) => {
-        setHeaders(results.meta.fields || []);
-        setData(results.data);
-      },
-    });
-  }, []);
-
+export default function NRMPTable({ data, headers, yearRange, selectedSpecialties, sliderComponent }) {
   if (!data.length) return <div>Loading table...</div>;
 
   const years = [2020, 2021, 2022, 2023, 2024, 2025];
@@ -69,7 +52,7 @@ export default function NRMPTable({ yearRange, headerComponent, sliderComponent 
     return total;
   };
 
-  // Filter out meaningless rows (rows with no quota data or empty key fields)
+  // Filter out meaningless rows and apply specialty filter
   const filteredData = data.filter(row => {
     // Check if row has any quota data for the selected years
     const hasSolicitedData = calculateSummary(row, "Quota") > 0;
@@ -83,15 +66,18 @@ export default function NRMPTable({ yearRange, headerComponent, sliderComponent 
       row[header].trim() !== ""
     );
     
-    // Keep row if it has data AND identifying information
-    return (hasSolicitedData || hasMatchedData) && (hasProgram || hasSpecialty);
+    // Check if specialty is selected (if filter is active)
+    const specialtyMatch = selectedSpecialties.length === 0 || 
+      selectedSpecialties.includes(row["Specialty Cleaned"]);
+    
+    // Keep row if it has data AND identifying information AND matches specialty filter
+    return (hasSolicitedData || hasMatchedData) && (hasProgram || hasSpecialty) && specialtyMatch;
   });
 
   return (
     <div className="nrmp-dashboard-container">
       {/* Header and Slider Section */}
       <div className="dashboard-header-section">
-        {headerComponent}
         {sliderComponent}
       </div>
 
@@ -99,7 +85,7 @@ export default function NRMPTable({ yearRange, headerComponent, sliderComponent 
       <div className="nrmp-tables-wrapper">
         {/* Summary Table */}
         <div className="table-section summary-section">
-          <h3 className="table-title summary-table-title">NRMP Data for All Specialties ({yearRange[0]} - {yearRange[1]})</h3>
+          <h3 className="table-title summary-table-title">NRMP Data for {selectedSpecialties.length === 0 ? "All" : "Selected"} Specialties ({yearRange[0]} - {yearRange[1]})</h3>
           <div className="nrmp-table-container">
             <table className="nrmp-table">
               <thead>
