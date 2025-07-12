@@ -11,15 +11,19 @@ export default function App() {
   const [yearRange, setYearRange] = useState([MIN_YEAR, MAX_YEAR]);
 
   return (
-    <div>
-      <Header />
-      <YearSlider
-        minYear={MIN_YEAR}
-        maxYear={MAX_YEAR}
-        value={yearRange}
-        onChange={setYearRange}
+    <div className="app-container">
+      <NRMPTable 
+        yearRange={yearRange}
+        headerComponent={<Header />}
+        sliderComponent={
+          <YearSlider
+            minYear={MIN_YEAR}
+            maxYear={MAX_YEAR}
+            value={yearRange}
+            onChange={setYearRange}
+          />
+        }
       />
-      <NRMPTable yearRange={yearRange} />
     </div>
   );
 }
