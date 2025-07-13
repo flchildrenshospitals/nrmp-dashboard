@@ -1,11 +1,12 @@
 .dashboard-header {
     background: linear-gradient(90deg, #003366 70%, #5683c6 100%);
     color: #fff;
-    padding: 24px 0 16px 0;
+    padding: 24px 40px 16px 40px;
     text-align: center;
     border-radius: 12px;
-    margin-bottom: 16px;
+    margin: 0 auto 16px auto;
     box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+    max-width: 1580px;
   }
   
   .dashboard-header h1 {
@@ -22,5 +23,12 @@
     opacity: 0.88;
     font-weight: 400;
     letter-spacing: 0.3px;
+  }
+  
+  @media (max-width: 768px) {
+    .dashboard-header {
+      margin: 0 0 16px 0;
+      padding: 24px 20px 16px 20px;
+    }
   }
   

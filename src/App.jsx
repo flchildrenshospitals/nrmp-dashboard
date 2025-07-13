@@ -34,15 +34,16 @@ export default function App() {
 
   return (
     <div className="app-container">
-      <Header />
-      {dataLoaded && (
-        <>
-          <SpecialtyFilter 
-            data={data}
-            selectedSpecialties={selectedSpecialties}
-            onSpecialtyChange={setSelectedSpecialties}
-          />
-          <NRMPTable 
+      <div className="main-container">
+        <Header />
+        {dataLoaded && (
+          <>
+            <SpecialtyFilter 
+              data={data}
+              selectedSpecialties={selectedSpecialties}
+              onSpecialtyChange={setSelectedSpecialties}
+            />
+            <NRMPTable 
             data={data}
             headers={headers}
             yearRange={yearRange}
@@ -58,6 +59,7 @@ export default function App() {
           />
         </>
       )}
+      </div>
     </div>
   );
 }

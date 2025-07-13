@@ -1,48 +1,37 @@
+/* Main Dashboard Container */
 .nrmp-dashboard-container {
-  display: flex;
-  flex-direction: column;
-  margin: 40px auto;
-  padding: 0 60px;
   width: 100%;
-  overflow-x: auto;
-  position: relative;
+  margin: 0 auto;
+  padding: 0 20px;
+  min-width: 0;
 }
 
+/* Dashboard Header Section */
 .dashboard-header-section {
   width: 100%;
-  margin-top: 10px;
-  margin-bottom: 20px;
+  max-width: 1600px;
+  margin: 10px auto 20px;
 }
 
-.nrmp-tables-wrapper {
-  display: flex;
-  flex-direction: row;
-  gap: 60px;
-  margin: 40px 0;
-  align-items: flex-start;
-  min-width: fit-content;
-  text-align: left;
-  justify-content: flex-start;
-  position: relative;
-  overflow: visible;
-  padding-right: 20px;
-}
-
-.summary-section {
-  flex: 0 0 auto;
-  min-width: fit-content;
-  position: relative;
-}
-
-.summary-table-header {
+/* Table Header Row */
+.table-header-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 24px;
+  padding: 0 8px;
+  max-width: 1600px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-.summary-table-header .table-title {
-  margin-bottom: 0;
+.table-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #003366;
+  margin: 0;
+  padding-left: 8px;
+  border-left: 4px solid #003366;
 }
 
 /* Toggle Button Styles */
@@ -81,61 +70,85 @@
   font-size: 14px;
 }
 
-/* Sliding Panel Animation */
-.detailed-section {
-  flex: 0 0 auto;
-  min-width: fit-content;
+/* Tables Container */
+.tables-container {
+  display: flex;
+  gap: 20px;
   overflow-x: auto;
-  position: absolute;
-  right: -1050px;
-  top: 0;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  opacity: 0;
-  visibility: hidden;
-  z-index: 10;
-}
-
-.detailed-section.show {
-  right: -40px;
-  opacity: 1;
-  visibility: visible;
+  overflow-y: hidden;
+  padding-bottom: 20px;
   position: relative;
-  box-shadow: -8px 0 20px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  min-width: 0;
 }
 
-.table-title {
-  font-size: 20px;
-  font-weight: 700;
-  color: #003366;
-  margin-bottom: 24px;
-  padding-left: 8px;
-  border-left: 4px solid #003366;
+/* Hide scrollbar but keep functionality */
+.tables-container::-webkit-scrollbar {
+  height: 10px;
 }
 
-/* Summary table container */
-.summary-section .nrmp-table-container {
-  width: 1500px;
-  min-width: 1500px;
-  max-width: 1500px;
+.tables-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
 }
 
-/* Detailed table container */
-.detailed-section .nrmp-table-container {
-  width: 970px;
-  min-width: 970px;
-  max-width: 970px;
+.tables-container::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
 }
 
+.tables-container::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Table Sections */
+.table-section {
+  flex-shrink: 0;
+}
+
+.summary-section {
+  flex: 0 0 auto;
+}
+
+.yearly-section {
+  flex: 0 0 auto;
+  animation: slideInFromRight 0.4s ease-out;
+}
+
+@keyframes slideInFromRight {
+  from {
+    transform: translateX(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Table Container */
 .nrmp-table-container {
-  overflow-x: auto;
   background: #f9fbfd;
   border-radius: 14px;
   box-shadow: 0 4px 20px rgba(0,0,0,0.09);
   padding: 40px;
-  margin-bottom: 20px;
   border: 1px solid #e1e6ec;
+  overflow: visible;
 }
 
+/* Summary table container specific width */
+.summary-section .nrmp-table-container {
+  width: auto;
+  min-width: 1200px;
+}
+
+/* Yearly table container specific width */
+.yearly-section .nrmp-table-container {
+  width: auto;
+  min-width: 600px;
+}
+
+/* Table Styles */
 .nrmp-table {
   width: 100%;
   border-collapse: collapse;
@@ -144,46 +157,6 @@
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 1px 4px rgba(0,0,0,0.03);
-  table-layout: fixed;
-}
-
-/* Fixed width for yearly data table */
-.detailed-section .nrmp-table {
-  width: auto;
-  min-width: fit-content;
-  table-layout: auto;
-}
-
-/* Fixed width for summary table */
-.summary-section .nrmp-table {
-  table-layout: auto;
-  width: auto;
-  min-width: fit-content;
-}
-
-.detailed-section .nrmp-table th,
-.detailed-section .nrmp-table td {
-  width: 65px;
-  min-width: 65px;
-  max-width: 65px;
-  text-align: center;
-  padding: 13px 8px;
-  font-size: 14px;
-}
-
-.detailed-section .nrmp-table td {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.detailed-section .nrmp-table th {
-  font-size: 14px;
-  padding: 13px 4px;
-  line-height: 1.1;
-  word-wrap: break-word;
-  hyphens: auto;
-  height: 55px;
 }
 
 .nrmp-table th,
@@ -193,6 +166,7 @@
   text-align: left;
   vertical-align: middle;
   height: 50px;
+  white-space: nowrap;
 }
 
 .nrmp-table th {
@@ -205,6 +179,9 @@
   border-top: none;
   border-bottom: 2px solid #1c4176;
   height: 55px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 .nrmp-table td {
@@ -225,24 +202,32 @@
   border-bottom: none;
 }
 
-/* Summary column styling */
+/* Yearly table specific styles */
+.yearly-table th,
+.yearly-table td {
+  width: 75px;
+  min-width: 75px;
+  text-align: center;
+  padding: 13px 8px;
+}
+
+.yearly-table th {
+  padding: 13px 4px;
+  line-height: 1.1;
+  word-wrap: break-word;
+}
+
+/* Summary Column Styling */
 .summary-column {
   background-color: #e8f4f8 !important;
   font-weight: 600;
   color: #003366;
   border-left: 2px solid #003366;
   border-right: 2px solid #003366;
-  width: 60px;
-  min-width: 60px;
-  max-width: 60px;
   text-align: center;
 }
 
-/* Summary column headers */
 .summary-column-header {
-  width: 60px !important;
-  min-width: 60px !important;
-  max-width: 60px !important;
   text-align: center !important;
 }
 
@@ -254,37 +239,38 @@
   background-color: #c7e3f0 !important;
 }
 
+/* No Data Message */
+.no-data-message {
+  padding: 60px 40px;
+  text-align: center;
+  color: #666;
+}
+
+.no-data-message p:first-child {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.no-data-message p:last-child {
+  font-size: 14px;
+  margin: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 1600px) {
+  .summary-section .nrmp-table-container {
+    width: 1000px;
+    min-width: 1000px;
+  }
+  
+  .yearly-section .nrmp-table-container {
+    width: 500px;
+    min-width: 500px;
+  }
+}
+
 @media (max-width: 1200px) {
-  .dashboard-header-section {
-    width: 100%;
-  }
-  
-  .nrmp-tables-wrapper {
-    flex-direction: column;
-    gap: 30px;
-    overflow: visible;
-  }
-  
-  .summary-section,
-  .detailed-section {
-    flex: 1;
-  }
-  
-  .detailed-section {
-    position: relative !important;
-    right: auto !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.4s ease-in-out;
-  }
-  
-  .detailed-section.show {
-    max-height: 2000px;
-  }
-  
-  .summary-table-header {
+  .table-header-row {
     flex-direction: column;
     align-items: flex-start;
     gap: 16px;
@@ -293,66 +279,52 @@
   .yearly-data-toggle {
     align-self: flex-start;
   }
+  
+  .tables-container {
+    flex-direction: column;
+    gap: 30px;
+  }
+  
+  .summary-section .nrmp-table-container,
+  .yearly-section .nrmp-table-container {
+    width: 100%;
+    min-width: unset;
+    max-width: 100%;
+  }
+  
+  .yearly-section {
+    animation: none;
+  }
 }
 
 @media (max-width: 768px) {
+  .nrmp-dashboard-container {
+    padding: 0 10px;
+  }
+  
   .table-title {
     font-size: 18px;
   }
   
   .nrmp-table-container {
-    padding: 15px;
+    padding: 20px;
     border-radius: 8px;
   }
   
-  .nrmp-table th, .nrmp-table td {
+  .nrmp-table th,
+  .nrmp-table td {
     padding: 10px 8px;
     font-size: 14px;
-    height: 45px;
   }
   
-  .nrmp-table th {
-    height: 50px;
-  }
-  
-  .detailed-section .nrmp-table th,
-  .detailed-section .nrmp-table td {
-    width: 55px;
-    min-width: 55px;
-    max-width: 55px;
+  .yearly-table th,
+  .yearly-table td {
+    width: 60px;
+    min-width: 60px;
     font-size: 12px;
   }
   
-  .detailed-section .nrmp-table th {
-    font-size: 10px;
-  }
-}
-
-@media (max-width: 650px) {
-  .nrmp-table-container {
-    padding: 10px 2px;
-    border-radius: 5px;
-  }
-  
-  .nrmp-table th, .nrmp-table td {
-    padding: 7px 6px;
-    font-size: 13px;
-    height: 40px;
-  }
-  
-  .nrmp-table th {
-    height: 45px;
-  }
-  
-  .detailed-section .nrmp-table th,
-  .detailed-section .nrmp-table td {
-    width: 50px;
-    min-width: 50px;
-    max-width: 50px;
-    font-size: 12px;
-  }
-  
-  .detailed-section .nrmp-table th {
-    font-size: 9px;
+  .no-data-message {
+    padding: 40px 20px;
   }
 }

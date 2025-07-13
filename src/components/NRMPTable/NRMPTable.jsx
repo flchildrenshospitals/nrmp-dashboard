@@ -78,97 +78,116 @@ export default function NRMPTable({ data, headers, yearRange, selectedSpecialtie
 
   return (
     <div className="nrmp-dashboard-container">
-      {/* Header and Slider Section */}
+      {/* Slider Section */}
       <div className="dashboard-header-section">
         {sliderComponent}
       </div>
 
-      {/* Aligned Tables Container */}
-      <div className="nrmp-tables-wrapper">
-        {/* Summary Table with Toggle Button */}
+      {/* Table Header with Toggle */}
+      <div className="table-header-row">
+        <h3 className="table-title">
+          NRMP Data for {selectedSpecialties.length === 0 ? "All" : "Selected"} Specialties ({yearRange[0]} - {yearRange[1]})
+        </h3>
+        <button 
+          className={`yearly-data-toggle ${showYearlyData ? 'active' : ''}`}
+          onClick={() => setShowYearlyData(!showYearlyData)}
+          aria-label={showYearlyData ? "Hide yearly data" : "Show yearly data"}
+        >
+          <span className="toggle-icon">{showYearlyData ? '◀' : '▶'}</span>
+          <span className="toggle-text">{showYearlyData ? 'Hide' : 'Show'} Yearly Data</span>
+        </button>
+      </div>
+
+      {/* Tables Container */}
+      <div className={`tables-container ${showYearlyData ? 'show-yearly' : ''}`}>
+        {/* Summary Table */}
         <div className="table-section summary-section">
-          <div className="summary-table-header">
-            <h3 className="table-title summary-table-title">NRMP Data for {selectedSpecialties.length === 0 ? "All" : "Selected"} Specialties ({yearRange[0]} - {yearRange[1]})</h3>
-            <button 
-              className={`yearly-data-toggle ${showYearlyData ? 'active' : ''}`}
-              onClick={() => setShowYearlyData(!showYearlyData)}
-              aria-label={showYearlyData ? "Hide yearly data" : "Show yearly data"}
-            >
-              <span className="toggle-icon">{showYearlyData ? '◀' : '▶'}</span>
-              <span className="toggle-text">{showYearlyData ? 'Hide' : 'Show'} Yearly Data</span>
-            </button>
-          </div>
           <div className="nrmp-table-container">
-            <table className="nrmp-table">
-              <thead>
-                <tr>
-                  {summaryHeaders.map((col) => {
-                    // Clean up column names for display
-                    let displayName = col;
-                    if (col === "Sponsoring Institution Cleaned") displayName = "SPONSORING INSTITUTION";
-                    if (col === "City Cleaned") displayName = "CITY";
-                    if (col === "Specialty Cleaned") displayName = "SPECIALTY";
-                    
-                    return (
-                      <th key={col} className={col === "SOLICITED" || col === "MATCHED" ? "summary-column-header" : ""}>
-                        {displayName}
-                      </th>
-                    );
-                  })}
-                </tr>
-              </thead>
-              <tbody>
-                {filteredData.map((row, i) => (
-                  <tr key={i}>
+            {filteredData.length === 0 ? (
+              <div className="no-data-message">
+                <p>No data found for the selected specialties.</p>
+                <p>Try selecting different specialties or adjusting the year range.</p>
+              </div>
+            ) : (
+              <table className="nrmp-table">
+                <thead>
+                  <tr>
                     {summaryHeaders.map((col) => {
-                      if (col === "SOLICITED") {
-                        return <td key={col} className="summary-column">{calculateSummary(row, "Quota").toLocaleString()}</td>;
-                      } else if (col === "MATCHED") {
-                        return <td key={col} className="summary-column">{calculateSummary(row, "Matched").toLocaleString()}</td>;
-                      } else {
-                        return <td key={col}>{row[col]}</td>;
-                      }
+                      // Clean up column names for display
+                      let displayName = col;
+                      if (col === "Sponsoring Institution Cleaned") displayName = "SPONSORING INSTITUTION";
+                      if (col === "City Cleaned") displayName = "CITY";
+                      if (col === "Specialty Cleaned") displayName = "SPECIALTY";
+                      
+                      return (
+                        <th key={col} className={col === "SOLICITED" || col === "MATCHED" ? "summary-column-header" : ""}>
+                          {displayName}
+                        </th>
+                      );
                     })}
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {filteredData.map((row, i) => (
+                    <tr key={i}>
+                      {summaryHeaders.map((col) => {
+                        if (col === "SOLICITED") {
+                          return <td key={col} className="summary-column">{calculateSummary(row, "Quota").toLocaleString()}</td>;
+                        } else if (col === "MATCHED") {
+                          return <td key={col} className="summary-column">{calculateSummary(row, "Matched").toLocaleString()}</td>;
+                        } else {
+                          return <td key={col}>{row[col]}</td>;
+                        }
+                      })}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
           </div>
         </div>
 
-        {/* Detailed Yearly Table - Sliding Panel */}
-        <div className={`table-section detailed-section ${showYearlyData ? 'show' : ''}`}>
-          <h3 className="table-title">Yearly Data ({yearRange[0]} - {yearRange[1]})</h3>
-          <div className="nrmp-table-container">
-            <table className="nrmp-table">
-              <thead>
-                <tr>
-                  {detailedHeaders.map((col) => {
-                    // Format headers to put year on first line, type on second line
-                    const parts = col.split(' ');
-                    const year = parts[0];
-                    const type = parts[1];
-                    return (
-                      <th key={col}>
-                        <div>{year}</div>
-                        <div>{type}</div>
-                      </th>
-                    );
-                  })}
-                </tr>
-              </thead>
-              <tbody>
-                {filteredData.map((row, i) => (
-                  <tr key={i}>
-                    {detailedHeaders.map((col) => (
-                      <td key={col}>{row[col]}</td>
+        {/* Yearly Data Table */}
+        {showYearlyData && (
+          <div className="table-section yearly-section">
+            <div className="nrmp-table-container">
+              {filteredData.length === 0 ? (
+                <div className="no-data-message">
+                  <p>No data found for the selected specialties.</p>
+                  <p>Try selecting different specialties or adjusting the year range.</p>
+                </div>
+              ) : (
+                <table className="nrmp-table yearly-table">
+                  <thead>
+                    <tr>
+                      {detailedHeaders.map((col) => {
+                        // Format headers to put year on first line, type on second line
+                        const parts = col.split(' ');
+                        const year = parts[0];
+                        const type = parts[1];
+                        return (
+                          <th key={col}>
+                            <div>{year}</div>
+                            <div>{type}</div>
+                          </th>
+                        );
+                      })}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredData.map((row, i) => (
+                      <tr key={i}>
+                        {detailedHeaders.map((col) => (
+                          <td key={col}>{row[col]}</td>
+                        ))}
+                      </tr>
                     ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                  </tbody>
+                </table>
+              )}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );
