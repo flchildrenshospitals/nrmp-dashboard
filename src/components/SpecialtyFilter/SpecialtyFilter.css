@@ -67,9 +67,6 @@
   grid-template-rows: repeat(12, auto);
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 12px;
-  max-height: 400px;
-  overflow-y: auto;
-  overflow-x: auto;
   padding-right: 10px;
 }
 
