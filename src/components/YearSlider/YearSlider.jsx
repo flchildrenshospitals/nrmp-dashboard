@@ -93,7 +93,7 @@ export default function YearSlider({ minYear, maxYear, value, onChange }) {
   return (
     <div style={{ 
       maxWidth: 500, 
-      margin: "80px auto auto auto", 
+      margin: "80px 0 0 0", 
       padding: "0 40px" 
     }}>
       <div 
@@ -101,7 +101,7 @@ export default function YearSlider({ minYear, maxYear, value, onChange }) {
         style={{ marginBottom: "20px" }}
       ></div>
       <div style={{ 
-        textAlign: "center", 
+        textAlign: "left", 
         marginTop: 20, 
         fontWeight: "bold",
         fontSize: "14px"
