@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import "./NRMPTable.css";
 
 export default function NRMPTable({ data, headers, yearRange, selectedSpecialties, sliderComponent }) {
+  const [showYearlyData, setShowYearlyData] = useState(false);
+  
   if (!data.length) return <div>Loading table...</div>;
 
   const years = [2020, 2021, 2022, 2023, 2024, 2025];
@@ -83,9 +85,19 @@ export default function NRMPTable({ data, headers, yearRange, selectedSpecialtie
 
       {/* Aligned Tables Container */}
       <div className="nrmp-tables-wrapper">
-        {/* Summary Table */}
+        {/* Summary Table with Toggle Button */}
         <div className="table-section summary-section">
-          <h3 className="table-title summary-table-title">NRMP Data for {selectedSpecialties.length === 0 ? "All" : "Selected"} Specialties ({yearRange[0]} - {yearRange[1]})</h3>
+          <div className="summary-table-header">
+            <h3 className="table-title summary-table-title">NRMP Data for {selectedSpecialties.length === 0 ? "All" : "Selected"} Specialties ({yearRange[0]} - {yearRange[1]})</h3>
+            <button 
+              className={`yearly-data-toggle ${showYearlyData ? 'active' : ''}`}
+              onClick={() => setShowYearlyData(!showYearlyData)}
+              aria-label={showYearlyData ? "Hide yearly data" : "Show yearly data"}
+            >
+              <span className="toggle-icon">{showYearlyData ? '◀' : '▶'}</span>
+              <span className="toggle-text">{showYearlyData ? 'Hide' : 'Show'} Yearly Data</span>
+            </button>
+          </div>
           <div className="nrmp-table-container">
             <table className="nrmp-table">
               <thead>
@@ -124,8 +136,8 @@ export default function NRMPTable({ data, headers, yearRange, selectedSpecialtie
           </div>
         </div>
 
-        {/* Detailed Yearly Table */}
-        <div className="table-section detailed-section">
+        {/* Detailed Yearly Table - Sliding Panel */}
+        <div className={`table-section detailed-section ${showYearlyData ? 'show' : ''}`}>
           <h3 className="table-title">Yearly Data ({yearRange[0]} - {yearRange[1]})</h3>
           <div className="nrmp-table-container">
             <table className="nrmp-table">

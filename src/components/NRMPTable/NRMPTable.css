@@ -5,6 +5,7 @@
   padding: 0 60px;
   width: 100%;
   overflow-x: auto;
+  position: relative;
 }
 
 .dashboard-header-section {
@@ -21,18 +22,85 @@
   align-items: flex-start;
   min-width: fit-content;
   text-align: left;
-  justify-content: center;
+  justify-content: flex-start;
+  position: relative;
+  overflow: visible;
+  padding-right: 20px;
 }
 
 .summary-section {
   flex: 0 0 auto;
   min-width: fit-content;
+  position: relative;
 }
 
+.summary-table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.summary-table-header .table-title {
+  margin-bottom: 0;
+}
+
+/* Toggle Button Styles */
+.yearly-data-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background-color: #003366;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 51, 102, 0.2);
+}
+
+.yearly-data-toggle:hover {
+  background-color: #1c4176;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 51, 102, 0.3);
+}
+
+.yearly-data-toggle.active {
+  background-color: #1c4176;
+}
+
+.toggle-icon {
+  font-size: 12px;
+  transition: transform 0.3s ease;
+}
+
+.toggle-text {
+  font-size: 14px;
+}
+
+/* Sliding Panel Animation */
 .detailed-section {
   flex: 0 0 auto;
   min-width: fit-content;
   overflow-x: auto;
+  position: absolute;
+  right: -1050px;
+  top: 0;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0;
+  visibility: hidden;
+  z-index: 10;
+}
+
+.detailed-section.show {
+  right: -40px;
+  opacity: 1;
+  visibility: visible;
+  position: relative;
+  box-shadow: -8px 0 20px rgba(0, 0, 0, 0.1);
 }
 
 .table-title {
@@ -194,11 +262,36 @@
   .nrmp-tables-wrapper {
     flex-direction: column;
     gap: 30px;
+    overflow: visible;
   }
   
   .summary-section,
   .detailed-section {
     flex: 1;
+  }
+  
+  .detailed-section {
+    position: relative !important;
+    right: auto !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-in-out;
+  }
+  
+  .detailed-section.show {
+    max-height: 2000px;
+  }
+  
+  .summary-table-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  
+  .yearly-data-toggle {
+    align-self: flex-start;
   }
 }
 
