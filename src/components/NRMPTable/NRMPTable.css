@@ -20,7 +20,7 @@
   align-items: center;
   margin-bottom: 24px;
   padding: 0 8px;
-  max-width: 1600px;
+  width: 1600px;
 }
 
 .table-title {
@@ -47,6 +47,7 @@
   font-weight: 600;
   transition: all 0.3s ease;
   box-shadow: 0 2px 8px rgba(0, 51, 102, 0.2);
+  margin-right: 130px;
 }
 
 .yearly-data-toggle:hover {

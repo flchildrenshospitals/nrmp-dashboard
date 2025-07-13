@@ -36,7 +36,7 @@ export default function SpecialtyFilter({ data, selectedSpecialties, onSpecialty
   if (uniqueSpecialties.length === 0) return null;
 
   return (
-    <div className="specialty-filter-container">
+    <div className={`specialty-filter-container ${isExpanded ? 'expanded' : ''}`}>
       <div className="specialty-filter-header">
         <h3>Filter by Specialty</h3>
         <button 
