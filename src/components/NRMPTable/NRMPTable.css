@@ -244,6 +244,18 @@
   text-align: left;
 }
 
+/* Add borders between years in yearly table */
+.yearly-table th:nth-child(even),
+.yearly-table td:nth-child(even) {
+  border-left: 2px solid #003366;
+}
+
+/* Add border to the right of the last column */
+.yearly-table th:last-child,
+.yearly-table td:last-child {
+  border-right: 2px solid #003366;
+}
+
 /* Summary Column Styling */
 .summary-column {
   font-weight: 600;
