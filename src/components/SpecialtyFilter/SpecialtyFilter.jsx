@@ -15,6 +15,27 @@ export default function SpecialtyFilter({ data, selectedSpecialties, onSpecialty
     return Array.from(specialties).sort();
   }, [data]);
 
+  // Extract main and specialty categories
+  const mainSpecialties = useMemo(() => {
+    const specialties = new Set();
+    data.forEach(row => {
+      if (row["Table"] === "Main" && row["Specialty Cleaned"] && row["Specialty Cleaned"].trim() !== "") {
+        specialties.add(row["Specialty Cleaned"]);
+      }
+    });
+    return Array.from(specialties).sort();
+  }, [data]);
+
+  const subspecialties = useMemo(() => {
+    const specialties = new Set();
+    data.forEach(row => {
+      if (row["Table"] === "Specialty" && row["Specialty Cleaned"] && row["Specialty Cleaned"].trim() !== "") {
+        specialties.add(row["Specialty Cleaned"]);
+      }
+    });
+    return Array.from(specialties).sort();
+  }, [data]);
+
   const handleSelectAll = () => {
     if (selectedSpecialties.length === uniqueSpecialties.length) {
       // If all are selected, unselect all
@@ -22,6 +43,32 @@ export default function SpecialtyFilter({ data, selectedSpecialties, onSpecialty
     } else {
       // Otherwise, select all
       onSpecialtyChange(uniqueSpecialties);
+    }
+  };
+
+  const handleSelectAllMain = () => {
+    // Toggle all main specialties
+    const allMainSelected = mainSpecialties.every(specialty => selectedSpecialties.includes(specialty));
+    if (allMainSelected) {
+      // Remove all main specialties from selection
+      onSpecialtyChange(selectedSpecialties.filter(specialty => !mainSpecialties.includes(specialty)));
+    } else {
+      // Add all main specialties to selection (avoiding duplicates)
+      const newSelection = [...new Set([...selectedSpecialties, ...mainSpecialties])];
+      onSpecialtyChange(newSelection);
+    }
+  };
+
+  const handleSelectAllSpecialty = () => {
+    // Toggle all subspecialties
+    const allSubspecialtiesSelected = subspecialties.every(specialty => selectedSpecialties.includes(specialty));
+    if (allSubspecialtiesSelected) {
+      // Remove all subspecialties from selection
+      onSpecialtyChange(selectedSpecialties.filter(specialty => !subspecialties.includes(specialty)));
+    } else {
+      // Add all subspecialties to selection (avoiding duplicates)
+      const newSelection = [...new Set([...selectedSpecialties, ...subspecialties])];
+      onSpecialtyChange(newSelection);
     }
   };
 
@@ -57,6 +104,24 @@ export default function SpecialtyFilter({ data, selectedSpecialties, onSpecialty
               onChange={handleSelectAll}
             />
             <span>Select All ({uniqueSpecialties.length})</span>
+          </label>
+          
+          <label className="checkbox-label">
+            <input
+              type="checkbox"
+              checked={mainSpecialties.every(specialty => selectedSpecialties.includes(specialty)) && mainSpecialties.length > 0}
+              onChange={handleSelectAllMain}
+            />
+            <span>All Main ({mainSpecialties.length})</span>
+          </label>
+          
+          <label className="checkbox-label">
+            <input
+              type="checkbox"
+              checked={subspecialties.every(specialty => selectedSpecialties.includes(specialty)) && subspecialties.length > 0}
+              onChange={handleSelectAllSpecialty}
+            />
+            <span>All Specialty ({subspecialties.length})</span>
           </label>
         </div>
         

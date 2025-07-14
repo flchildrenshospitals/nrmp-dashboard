@@ -61,6 +61,8 @@
 }
 
 .select-all-container {
+  display: flex;
+  gap: 30px;
   padding-bottom: 15px;
   border-bottom: 2px solid #003366;
   margin-bottom: 20px;
