@@ -83,6 +83,22 @@ export default function NRMPTable({ data, headers, yearRange, selectedSpecialtie
       .filter(institution => institution && institution.trim() !== "")
   ).size;
 
+  // Calculate median match percentage
+  const matchPercentages = filteredData
+    .map(row => {
+      const solicited = calculateSummary(row, "Quota");
+      const matched = calculateSummary(row, "Matched");
+      return solicited > 0 ? (matched / solicited) * 100 : 0;
+    })
+    .filter(percentage => percentage >= 0) // Filter out any invalid percentages
+    .sort((a, b) => a - b);
+
+  const medianMatchPercentage = matchPercentages.length > 0 
+    ? matchPercentages.length % 2 === 0
+      ? ((matchPercentages[Math.floor(matchPercentages.length / 2) - 1] + matchPercentages[Math.floor(matchPercentages.length / 2)]) / 2).toFixed(1)
+      : matchPercentages[Math.floor(matchPercentages.length / 2)].toFixed(1)
+    : "0.0";
+
   return (
     <div className="nrmp-dashboard-container">
       {/* Slider Section */}
@@ -94,6 +110,7 @@ export default function NRMPTable({ data, headers, yearRange, selectedSpecialtie
       <div className="table-header-row">
         <h3 className="table-title">
           NRMP Data for {selectedSpecialties.length === 0 ? "All" : "Selected"} Specialties ({yearRange[0]} - {yearRange[1]}) - {uniqueInstitutionsCount} Sponsoring Institutions
+          <span className="median-match-stat"> | Median Match Rate: {medianMatchPercentage}%</span>
         </h3>
         <button 
           className={`yearly-data-toggle ${showYearlyData ? 'active' : ''}`}
