@@ -76,6 +76,13 @@ export default function NRMPTable({ data, headers, yearRange, selectedSpecialtie
     return (hasSolicitedData || hasMatchedData) && (hasProgram || hasSpecialty) && specialtyMatch;
   });
 
+  // Count unique sponsoring institutions in filtered data
+  const uniqueInstitutionsCount = new Set(
+    filteredData
+      .map(row => row["Sponsoring Institution Cleaned"])
+      .filter(institution => institution && institution.trim() !== "")
+  ).size;
+
   return (
     <div className="nrmp-dashboard-container">
       {/* Slider Section */}
@@ -86,7 +93,7 @@ export default function NRMPTable({ data, headers, yearRange, selectedSpecialtie
       {/* Table Header with Toggle */}
       <div className="table-header-row">
         <h3 className="table-title">
-          NRMP Data for {selectedSpecialties.length === 0 ? "All" : "Selected"} Specialties ({yearRange[0]} - {yearRange[1]})
+          NRMP Data for {selectedSpecialties.length === 0 ? "All" : "Selected"} Specialties ({yearRange[0]} - {yearRange[1]}) - {uniqueInstitutionsCount} Sponsoring Institutions
         </h3>
         <button 
           className={`yearly-data-toggle ${showYearlyData ? 'active' : ''}`}
