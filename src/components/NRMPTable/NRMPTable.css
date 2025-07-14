@@ -41,7 +41,10 @@
 /* Total Row Styles */
 .total-row {
   background-color: #f0f5ff;
-  border-bottom: 2px solid #003366;
+}
+
+.total-row td {
+  border-bottom: 2px solid #003366 !important;
 }
 
 .total-label {
@@ -245,15 +248,17 @@
 }
 
 /* Add borders between years in yearly table */
-.yearly-table th:nth-child(even),
 .yearly-table td:nth-child(even) {
-  border-left: 2px solid #003366;
+  border-left: 1px solid #e9e9e9;
+}
+
+.nrmp-table.yearly-table th:nth-child(even) {
+  border-left: 1px solid #003366d4 !important;
 }
 
 /* Add border to the right of the last column */
-.yearly-table th:last-child,
 .yearly-table td:last-child {
-  border-right: 2px solid #003366;
+  border-right: 1px solid #e9e9e9;
 }
 
 /* Summary Column Styling */
