@@ -50,8 +50,10 @@ export default function SpecialtyFilter({ data, selectedSpecialties, onSpecialty
     // Toggle all main specialties
     const allMainSelected = mainSpecialties.every(specialty => selectedSpecialties.includes(specialty));
     if (allMainSelected) {
-      // Remove all main specialties from selection
-      onSpecialtyChange(selectedSpecialties.filter(specialty => !mainSpecialties.includes(specialty)));
+      // Remove only main specialties that are NOT also in subspecialties
+      // Keep specialties that appear in both categories
+      const mainOnlySpecialties = mainSpecialties.filter(specialty => !subspecialties.includes(specialty));
+      onSpecialtyChange(selectedSpecialties.filter(specialty => !mainOnlySpecialties.includes(specialty)));
     } else {
       // Add all main specialties to selection (avoiding duplicates)
       const newSelection = [...new Set([...selectedSpecialties, ...mainSpecialties])];
@@ -63,8 +65,10 @@ export default function SpecialtyFilter({ data, selectedSpecialties, onSpecialty
     // Toggle all subspecialties
     const allSubspecialtiesSelected = subspecialties.every(specialty => selectedSpecialties.includes(specialty));
     if (allSubspecialtiesSelected) {
-      // Remove all subspecialties from selection
-      onSpecialtyChange(selectedSpecialties.filter(specialty => !subspecialties.includes(specialty)));
+      // Remove only subspecialties that are NOT also in main specialties
+      // Keep specialties that appear in both categories
+      const specialtyOnlySpecialties = subspecialties.filter(specialty => !mainSpecialties.includes(specialty));
+      onSpecialtyChange(selectedSpecialties.filter(specialty => !specialtyOnlySpecialties.includes(specialty)));
     } else {
       // Add all subspecialties to selection (avoiding duplicates)
       const newSelection = [...new Set([...selectedSpecialties, ...subspecialties])];
