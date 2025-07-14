@@ -9,8 +9,13 @@
 /* Dashboard Header Section */
 .dashboard-header-section {
   width: 100%;
-  max-width: 1600px;
-  margin: 10px 0 20px 0;
+  max-width: 1450px;
+  margin: -30px 0 50px 0;
+  background: #f9fbfd;
+  border-radius: 14px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.09);
+  padding: 20px 20px 20px 20px;
+  border: 1px solid #e1e6ec;
 }
 
 /* Table Header Row */

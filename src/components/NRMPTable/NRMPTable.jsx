@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./NRMPTable.css";
 
-export default function NRMPTable({ data, headers, yearRange, selectedSpecialties, sliderComponent }) {
+export default function NRMPTable({ data, headers, yearRange, selectedSpecialties, snhafFilter, sliderComponent }) {
   const [showYearlyData, setShowYearlyData] = useState(false);
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
   
@@ -48,8 +48,13 @@ export default function NRMPTable({ data, headers, yearRange, selectedSpecialtie
     const specialtyMatch = selectedSpecialties.length === 0 || 
       selectedSpecialties.includes(row["Specialty Cleaned"]);
     
-    // Keep row if it has data AND has institution AND matches specialty filter
-    return (hasSolicitedData || hasMatchedData) && hasInstitution && specialtyMatch;
+    // Check SNHAF filter
+    const snhafMatch = snhafFilter === 'ALL' || 
+      (snhafFilter === 'SNHAF' && row["SNHAF"] === 'SNHAF') ||
+      (snhafFilter === 'NOT' && row["SNHAF"] === 'NOT');
+    
+    // Keep row if it has data AND has institution AND matches specialty filter AND matches SNHAF filter
+    return (hasSolicitedData || hasMatchedData) && hasInstitution && specialtyMatch && snhafMatch;
   });
 
   // Aggregate data by institution

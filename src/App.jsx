@@ -4,6 +4,7 @@ import Header from "./components/Header/Header";
 import NRMPTable from "./components/NRMPTable/NRMPTable";
 import YearSlider from "./components/YearSlider/YearSlider";
 import SpecialtyFilter from "./components/SpecialtyFilter/SpecialtyFilter";
+import SNHAFFilter from "./components/SNHAFFilter/SNHAFFilter";
 
 // Update as appropriate based on your CSV
 const MIN_YEAR = 2020;
@@ -15,6 +16,7 @@ export default function App() {
   const [data, setData] = useState([]);
   const [headers, setHeaders] = useState([]);
   const [selectedSpecialties, setSelectedSpecialties] = useState([]);
+  const [snhafFilter, setSnhafFilter] = useState('ALL'); // 'ALL', 'SNHAF', 'NOT'
   const [dataLoaded, setDataLoaded] = useState(false);
 
   useEffect(() => {
@@ -43,20 +45,27 @@ export default function App() {
               selectedSpecialties={selectedSpecialties}
               onSpecialtyChange={setSelectedSpecialties}
             />
-            <NRMPTable 
+                        <NRMPTable 
             data={data}
             headers={headers}
             yearRange={yearRange}
             selectedSpecialties={selectedSpecialties}
+            snhafFilter={snhafFilter}
             sliderComponent={
-              <YearSlider
-                minYear={MIN_YEAR}
-                maxYear={MAX_YEAR}
-                value={yearRange}
-                onChange={setYearRange}
-              />
+              <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+                <YearSlider
+                  minYear={MIN_YEAR}
+                  maxYear={MAX_YEAR}
+                  value={yearRange}
+                  onChange={setYearRange}
+                />
+                <SNHAFFilter 
+                  value={snhafFilter}
+                  onChange={setSnhafFilter}
+                />
+              </div>
             }
-          />
+            />
         </>
       )}
       </div>

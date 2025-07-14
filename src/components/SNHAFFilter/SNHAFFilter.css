@@ -1,0 +1,50 @@
+.snhaf-filter-container {
+  margin-left: 300px;
+  min-width: 300px;
+}
+
+.snhaf-filter-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #003366;
+  margin: 0 0 10px 0;
+  text-align: left;
+}
+
+.snhaf-filter-options {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
+.snhaf-filter-option {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 4px 0;
+  transition: all 0.2s ease;
+}
+
+.snhaf-filter-option input[type="radio"] {
+  margin-right: 8px;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: #003366;
+}
+
+.snhaf-option-label {
+  font-size: 14px;
+  color: #333;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.snhaf-filter-option:hover .snhaf-option-label {
+  color: #003366;
+}
+
+.snhaf-filter-option input[type="radio"]:checked + .snhaf-option-label {
+  color: #003366;
+  font-weight: 600;
+} 
