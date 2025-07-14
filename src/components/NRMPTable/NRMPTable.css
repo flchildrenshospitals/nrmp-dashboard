@@ -38,6 +38,22 @@
   font-size: 18px;
 }
 
+/* Total Row Styles */
+.total-row {
+  background-color: #f0f5ff;
+  border-bottom: 2px solid #003366;
+}
+
+.total-label {
+  font-weight: 700;
+  color: #003366;
+}
+
+.total-value {
+  font-weight: 700;
+  color: #003366;
+}
+
 /* Toggle Button Styles */
 .yearly-data-toggle {
   display: flex;

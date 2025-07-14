@@ -85,6 +85,21 @@ export default function NRMPTable({ data, headers, yearRange, selectedSpecialtie
   // Convert map to array for table rendering
   const filteredData = Array.from(institutionMap.values());
 
+  // Calculate totals for all institutions
+  const totalSolicited = filteredData.reduce((sum, row) => sum + calculateSummary(row, "Quota"), 0);
+  const totalMatched = filteredData.reduce((sum, row) => sum + calculateSummary(row, "Matched"), 0);
+  const totalNotMatched = totalSolicited - totalMatched;
+  const totalMatchPercentage = totalSolicited > 0 ? ((totalMatched / totalSolicited) * 100).toFixed(1) : "0.0";
+
+  // Calculate yearly totals for each year column
+  const yearlyTotals = {};
+  yearCols.forEach(col => {
+    yearlyTotals[col] = filteredData.reduce((sum, row) => {
+      const value = parseInt(row[col] || 0, 10);
+      return sum + value;
+    }, 0);
+  });
+
   // Count unique sponsoring institutions in filtered data (now one row per institution)
   const uniqueInstitutionsCount = filteredData.length;
 
@@ -157,6 +172,26 @@ export default function NRMPTable({ data, headers, yearRange, selectedSpecialtie
                   </tr>
                 </thead>
                 <tbody>
+                  {/* Total Row */}
+                  <tr className="total-row">
+                    {summaryHeaders.map((col) => {
+                      if (col === "Sponsoring Institution Cleaned") {
+                        return <td key={col} className="total-label"><strong>TOTAL</strong></td>;
+                      } else if (col === "SOLICITED") {
+                        return <td key={col} className="summary-column total-value"><strong>{totalSolicited.toLocaleString()}</strong></td>;
+                      } else if (col === "MATCHED") {
+                        return <td key={col} className="summary-column total-value"><strong>{totalMatched.toLocaleString()}</strong></td>;
+                      } else if (col === "NOT MATCHED") {
+                        return <td key={col} className="summary-column total-value"><strong>{totalNotMatched.toLocaleString()}</strong></td>;
+                      } else if (col === "MATCH %") {
+                        return <td key={col} className="summary-column total-value"><strong>{totalMatchPercentage}%</strong></td>;
+                      } else {
+                        return <td key={col}></td>;
+                      }
+                    })}
+                  </tr>
+                  
+                  {/* Institution Rows */}
                   {filteredData.map((row, i) => (
                     <tr key={i}>
                       {summaryHeaders.map((col) => {
@@ -223,6 +258,20 @@ export default function NRMPTable({ data, headers, yearRange, selectedSpecialtie
                     </tr>
                   </thead>
                   <tbody>
+                    {/* Total Row */}
+                    <tr className="total-row">
+                      {detailedHeaders.map((col) => {
+                        if (col === "Sponsoring Institution Cleaned") {
+                          return <td key={col} className="total-label"><strong>TOTAL</strong></td>;
+                        } else {
+                          // Show yearly totals
+                          const totalValue = yearlyTotals[col] || 0;
+                          return <td key={col} className="total-value"><strong>{totalValue.toLocaleString()}</strong></td>;
+                        }
+                      })}
+                    </tr>
+                    
+                    {/* Institution Rows */}
                     {filteredData.map((row, i) => (
                       <tr key={i}>
                         {detailedHeaders.map((col) => {
