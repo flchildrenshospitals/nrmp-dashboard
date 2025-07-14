@@ -33,10 +33,10 @@ export default function NRMPTable({ data, headers, yearRange, selectedSpecialtie
   if (programCodeIndex !== -1) {
     const beforeProgramCode = baseHeaders.slice(0, programCodeIndex + 1);
     const afterProgramCode = baseHeaders.slice(programCodeIndex + 1);
-    const summaryColumns = ["SOLICITED", "MATCHED"];
+    const summaryColumns = ["SOLICITED", "MATCHED", "NOT MATCHED", "MATCH %"];
     summaryHeaders = [...beforeProgramCode, ...summaryColumns, ...afterProgramCode];
   } else {
-    const summaryColumns = ["SOLICITED", "MATCHED"];
+    const summaryColumns = ["SOLICITED", "MATCHED", "NOT MATCHED", "MATCH %"];
     summaryHeaders = [...baseHeaders, ...summaryColumns];
   }
 
@@ -127,7 +127,7 @@ export default function NRMPTable({ data, headers, yearRange, selectedSpecialtie
                       if (col === "Specialty Cleaned") displayName = "SPECIALTY";
                       
                       return (
-                        <th key={col} className={col === "SOLICITED" || col === "MATCHED" ? "summary-column-header" : ""}>
+                        <th key={col} className={col === "SOLICITED" || col === "MATCHED" || col === "NOT MATCHED" || col === "MATCH %" ? "summary-column-header" : ""}>
                           {displayName}
                         </th>
                       );
@@ -142,6 +142,16 @@ export default function NRMPTable({ data, headers, yearRange, selectedSpecialtie
                           return <td key={col} className="summary-column">{calculateSummary(row, "Quota").toLocaleString()}</td>;
                         } else if (col === "MATCHED") {
                           return <td key={col} className="summary-column">{calculateSummary(row, "Matched").toLocaleString()}</td>;
+                        } else if (col === "NOT MATCHED") {
+                          const solicited = calculateSummary(row, "Quota");
+                          const matched = calculateSummary(row, "Matched");
+                          const notMatched = solicited - matched;
+                          return <td key={col} className="summary-column">{notMatched.toLocaleString()}</td>;
+                        } else if (col === "MATCH %") {
+                          const solicited = calculateSummary(row, "Quota");
+                          const matched = calculateSummary(row, "Matched");
+                          const matchPercentage = solicited > 0 ? ((matched / solicited) * 100).toFixed(1) : "0.0";
+                          return <td key={col} className="summary-column">{matchPercentage}%</td>;
                         } else {
                           return <td key={col}>{row[col]}</td>;
                         }
