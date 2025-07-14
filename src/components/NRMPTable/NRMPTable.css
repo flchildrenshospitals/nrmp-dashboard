@@ -272,6 +272,15 @@
   text-align: left !important;
 }
 
+/* Sortable Header Styles */
+.sortable-header {
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.2s ease;
+}
+
+
+
 /* No Data Message */
 .no-data-message {
   padding: 60px 40px;

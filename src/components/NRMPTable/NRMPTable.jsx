@@ -3,6 +3,7 @@ import "./NRMPTable.css";
 
 export default function NRMPTable({ data, headers, yearRange, selectedSpecialties, sliderComponent }) {
   const [showYearlyData, setShowYearlyData] = useState(false);
+  const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
   
   if (!data.length) return <div>Loading table...</div>;
 
@@ -83,7 +84,52 @@ export default function NRMPTable({ data, headers, yearRange, selectedSpecialtie
   });
 
   // Convert map to array for table rendering
-  const filteredData = Array.from(institutionMap.values());
+  let filteredData = Array.from(institutionMap.values());
+
+  // Sorting function
+  const handleSort = (key) => {
+    let direction = 'asc';
+    if (sortConfig.key === key && sortConfig.direction === 'asc') {
+      direction = 'desc';
+    }
+    setSortConfig({ key, direction });
+  };
+
+  // Apply sorting to filteredData
+  if (sortConfig.key) {
+    filteredData = [...filteredData].sort((a, b) => {
+      let aValue, bValue;
+
+      if (sortConfig.key === 'Sponsoring Institution Cleaned') {
+        aValue = a[sortConfig.key] || '';
+        bValue = b[sortConfig.key] || '';
+        return sortConfig.direction === 'asc' 
+          ? aValue.localeCompare(bValue)
+          : bValue.localeCompare(aValue);
+      } else if (sortConfig.key === 'SOLICITED') {
+        aValue = calculateSummary(a, "Quota");
+        bValue = calculateSummary(b, "Quota");
+      } else if (sortConfig.key === 'MATCHED') {
+        aValue = calculateSummary(a, "Matched");
+        bValue = calculateSummary(b, "Matched");
+      } else if (sortConfig.key === 'NOT MATCHED') {
+        aValue = calculateSummary(a, "Quota") - calculateSummary(a, "Matched");
+        bValue = calculateSummary(b, "Quota") - calculateSummary(b, "Matched");
+      } else if (sortConfig.key === 'MATCH %') {
+        const aSolicited = calculateSummary(a, "Quota");
+        const aMatched = calculateSummary(a, "Matched");
+        aValue = aSolicited > 0 ? (aMatched / aSolicited) * 100 : 0;
+        
+        const bSolicited = calculateSummary(b, "Quota");
+        const bMatched = calculateSummary(b, "Matched");
+        bValue = bSolicited > 0 ? (bMatched / bSolicited) * 100 : 0;
+      }
+
+      if (sortConfig.key !== 'Sponsoring Institution Cleaned') {
+        return sortConfig.direction === 'asc' ? aValue - bValue : bValue - aValue;
+      }
+    });
+  }
 
   // Calculate totals for all institutions
   const totalSolicited = filteredData.reduce((sum, row) => sum + calculateSummary(row, "Quota"), 0);
@@ -163,9 +209,19 @@ export default function NRMPTable({ data, headers, yearRange, selectedSpecialtie
                       if (col === "City Cleaned") displayName = "CITY";
                       if (col === "Specialty Cleaned") displayName = "SPECIALTY";
                       
+                      // Add sort indicator
+                      const getSortIndicator = () => {
+                        if (sortConfig.key !== col) return ' ↕️';
+                        return sortConfig.direction === 'asc' ? ' ↑' : ' ↓';
+                      };
+                      
                       return (
-                        <th key={col} className={col === "SOLICITED" || col === "MATCHED" || col === "NOT MATCHED" || col === "MATCH %" ? "summary-column-header" : ""}>
-                          {displayName}
+                        <th 
+                          key={col} 
+                          className={`${col === "SOLICITED" || col === "MATCHED" || col === "NOT MATCHED" || col === "MATCH %" ? "summary-column-header" : ""} sortable-header`}
+                          onClick={() => handleSort(col)}
+                        >
+                          {displayName}{getSortIndicator()}
                         </th>
                       );
                     })}
