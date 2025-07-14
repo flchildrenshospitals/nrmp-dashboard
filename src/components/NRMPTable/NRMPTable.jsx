@@ -21,8 +21,8 @@ export default function NRMPTable({ data, headers, yearRange, selectedSpecialtie
   const summaryColumns = ["SOLICITED", "MATCHED", "NOT MATCHED", "MATCH %"];
   const summaryHeaders = [...baseHeaders, ...summaryColumns];
 
-  // Create headers for detailed table (institution + year columns)
-  const detailedHeaders = ["Sponsoring Institution Cleaned", ...yearCols];
+  // Create headers for detailed table (only year columns)
+  const detailedHeaders = yearCols;
 
   // Function to calculate summary values for a row
   const calculateSummary = (row, type) => {
@@ -296,24 +296,16 @@ export default function NRMPTable({ data, headers, yearRange, selectedSpecialtie
                   <thead>
                     <tr>
                       {detailedHeaders.map((col) => {
-                        if (col === "Sponsoring Institution Cleaned") {
-                          return (
-                            <th key={col}>
-                              SPONSORING INSTITUTION
-                            </th>
-                          );
-                        } else {
-                          // Format year headers to put year on first line, type on second line
-                          const parts = col.split(' ');
-                          const year = parts[0];
-                          const type = parts[1];
-                          return (
-                            <th key={col}>
-                              <div>{year}</div>
-                              <div>{type}</div>
-                            </th>
-                          );
-                        }
+                        // Format year headers to put year on first line, type on second line
+                        const parts = col.split(' ');
+                        const year = parts[0];
+                        const type = parts[1];
+                        return (
+                          <th key={col}>
+                            <div>{year}</div>
+                            <div>{type}</div>
+                          </th>
+                        );
                       })}
                     </tr>
                   </thead>
@@ -321,13 +313,9 @@ export default function NRMPTable({ data, headers, yearRange, selectedSpecialtie
                     {/* Total Row */}
                     <tr className="total-row">
                       {detailedHeaders.map((col) => {
-                        if (col === "Sponsoring Institution Cleaned") {
-                          return <td key={col} className="total-label"><strong>TOTAL</strong></td>;
-                        } else {
-                          // Show yearly totals
-                          const totalValue = yearlyTotals[col] || 0;
-                          return <td key={col} className="total-value"><strong>{totalValue.toLocaleString()}</strong></td>;
-                        }
+                        // Show yearly totals
+                        const totalValue = yearlyTotals[col] || 0;
+                        return <td key={col} className="total-value"><strong>{totalValue.toLocaleString()}</strong></td>;
                       })}
                     </tr>
                     
@@ -335,13 +323,9 @@ export default function NRMPTable({ data, headers, yearRange, selectedSpecialtie
                     {filteredData.map((row, i) => (
                       <tr key={i}>
                         {detailedHeaders.map((col) => {
-                          if (col === "Sponsoring Institution Cleaned") {
-                            return <td key={col}>{row[col]}</td>;
-                          } else {
-                            // Format numbers with commas
-                            const value = parseInt(row[col] || 0, 10);
-                            return <td key={col}>{value.toLocaleString()}</td>;
-                          }
+                          // Format numbers with commas
+                          const value = parseInt(row[col] || 0, 10);
+                          return <td key={col}>{value.toLocaleString()}</td>;
                         })}
                       </tr>
                     ))}
