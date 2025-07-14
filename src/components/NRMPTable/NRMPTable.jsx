@@ -13,35 +13,15 @@ export default function NRMPTable({ data, headers, yearRange, selectedSpecialtie
     yearCols.push(`${y} Quota`, `${y} Matched`);
   });
 
-  // Get base headers (non-year columns) and exclude unwanted columns
-  const columnsToHide = ["Sponsoring Institution", "City", "Specialty"];
-  const baseHeaders = headers.filter(
-    h => !h.match(/^\d{4} (Quota|Matched)$/) && !columnsToHide.includes(h)
-  );
-
-  // Find the index of PROGRAM CODE column (try different possible names)
-  let programCodeIndex = baseHeaders.findIndex(h => h === "PROGRAM CODE");
-  if (programCodeIndex === -1) {
-    programCodeIndex = baseHeaders.findIndex(h => h.includes("PROGRAM") && h.includes("CODE"));
-  }
-  if (programCodeIndex === -1) {
-    programCodeIndex = baseHeaders.findIndex(h => h.toLowerCase().includes("program") && h.toLowerCase().includes("code"));
-  }
+  // For institution-level aggregation, we only need the sponsoring institution column
+  const baseHeaders = ["Sponsoring Institution Cleaned"];
   
-  // Create headers for summary table (base headers + summary columns)
-  let summaryHeaders;
-  if (programCodeIndex !== -1) {
-    const beforeProgramCode = baseHeaders.slice(0, programCodeIndex + 1);
-    const afterProgramCode = baseHeaders.slice(programCodeIndex + 1);
-    const summaryColumns = ["SOLICITED", "MATCHED", "NOT MATCHED", "MATCH %"];
-    summaryHeaders = [...beforeProgramCode, ...summaryColumns, ...afterProgramCode];
-  } else {
-    const summaryColumns = ["SOLICITED", "MATCHED", "NOT MATCHED", "MATCH %"];
-    summaryHeaders = [...baseHeaders, ...summaryColumns];
-  }
+  // Create headers for summary table (institution + summary columns)
+  const summaryColumns = ["SOLICITED", "MATCHED", "NOT MATCHED", "MATCH %"];
+  const summaryHeaders = [...baseHeaders, ...summaryColumns];
 
-  // Create headers for detailed table (only year columns)
-  const detailedHeaders = yearCols;
+  // Create headers for detailed table (institution + year columns)
+  const detailedHeaders = ["Sponsoring Institution Cleaned", ...yearCols];
 
   // Function to calculate summary values for a row
   const calculateSummary = (row, type) => {
@@ -54,34 +34,59 @@ export default function NRMPTable({ data, headers, yearRange, selectedSpecialtie
     return total;
   };
 
-  // Filter out meaningless rows and apply specialty filter
-  const filteredData = data.filter(row => {
+  // Filter and aggregate data by institution
+  const filteredRowData = data.filter(row => {
     // Check if row has any quota data for the selected years
     const hasSolicitedData = calculateSummary(row, "Quota") > 0;
     const hasMatchedData = calculateSummary(row, "Matched") > 0;
     
     // Check if key identifying fields are present
-    const hasProgram = row["PROGRAM CODE"] && row["PROGRAM CODE"].trim() !== "";
-    const hasSpecialty = baseHeaders.some(header => 
-      header.toLowerCase().includes("specialty") && 
-      row[header] && 
-      row[header].trim() !== ""
-    );
+    const hasInstitution = row["Sponsoring Institution Cleaned"] && row["Sponsoring Institution Cleaned"].trim() !== "";
     
     // Check if specialty is selected (if filter is active)
     const specialtyMatch = selectedSpecialties.length === 0 || 
       selectedSpecialties.includes(row["Specialty Cleaned"]);
     
-    // Keep row if it has data AND identifying information AND matches specialty filter
-    return (hasSolicitedData || hasMatchedData) && (hasProgram || hasSpecialty) && specialtyMatch;
+    // Keep row if it has data AND has institution AND matches specialty filter
+    return (hasSolicitedData || hasMatchedData) && hasInstitution && specialtyMatch;
   });
 
-  // Count unique sponsoring institutions in filtered data
-  const uniqueInstitutionsCount = new Set(
-    filteredData
-      .map(row => row["Sponsoring Institution Cleaned"])
-      .filter(institution => institution && institution.trim() !== "")
-  ).size;
+  // Aggregate data by institution
+  const institutionMap = new Map();
+  
+  filteredRowData.forEach(row => {
+    const institution = row["Sponsoring Institution Cleaned"];
+    
+    if (!institutionMap.has(institution)) {
+      // Initialize institution entry with zeros for all years
+      const institutionData = {
+        "Sponsoring Institution Cleaned": institution
+      };
+      
+      // Initialize all year columns to 0
+      years.forEach(year => {
+        institutionData[`${year} Quota`] = 0;
+        institutionData[`${year} Matched`] = 0;
+      });
+      
+      institutionMap.set(institution, institutionData);
+    }
+    
+    // Sum up the values for this institution
+    const institutionData = institutionMap.get(institution);
+    years.forEach(year => {
+      const quotaValue = parseInt(row[`${year} Quota`] || 0, 10);
+      const matchedValue = parseInt(row[`${year} Matched`] || 0, 10);
+      institutionData[`${year} Quota`] += quotaValue;
+      institutionData[`${year} Matched`] += matchedValue;
+    });
+  });
+
+  // Convert map to array for table rendering
+  const filteredData = Array.from(institutionMap.values());
+
+  // Count unique sponsoring institutions in filtered data (now one row per institution)
+  const uniqueInstitutionsCount = filteredData.length;
 
   // Calculate median match percentage
   const matchPercentages = filteredData
@@ -195,25 +200,40 @@ export default function NRMPTable({ data, headers, yearRange, selectedSpecialtie
                   <thead>
                     <tr>
                       {detailedHeaders.map((col) => {
-                        // Format headers to put year on first line, type on second line
-                        const parts = col.split(' ');
-                        const year = parts[0];
-                        const type = parts[1];
-                        return (
-                          <th key={col}>
-                            <div>{year}</div>
-                            <div>{type}</div>
-                          </th>
-                        );
+                        if (col === "Sponsoring Institution Cleaned") {
+                          return (
+                            <th key={col}>
+                              <div>SPONSORING</div>
+                              <div>INSTITUTION</div>
+                            </th>
+                          );
+                        } else {
+                          // Format year headers to put year on first line, type on second line
+                          const parts = col.split(' ');
+                          const year = parts[0];
+                          const type = parts[1];
+                          return (
+                            <th key={col}>
+                              <div>{year}</div>
+                              <div>{type}</div>
+                            </th>
+                          );
+                        }
                       })}
                     </tr>
                   </thead>
                   <tbody>
                     {filteredData.map((row, i) => (
                       <tr key={i}>
-                        {detailedHeaders.map((col) => (
-                          <td key={col}>{row[col]}</td>
-                        ))}
+                        {detailedHeaders.map((col) => {
+                          if (col === "Sponsoring Institution Cleaned") {
+                            return <td key={col}>{row[col]}</td>;
+                          } else {
+                            // Format numbers with commas
+                            const value = parseInt(row[col] || 0, 10);
+                            return <td key={col}>{value.toLocaleString()}</td>;
+                          }
+                        })}
                       </tr>
                     ))}
                   </tbody>
