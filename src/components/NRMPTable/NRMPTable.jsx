@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import "./NRMPTable.css";
+import PDFExport from "../PDFExport/PDFExport";
 
 export default function NRMPTable({ data, headers, yearRange, selectedSpecialties, snhafFilter, sliderComponent }) {
   const [showYearlyData, setShowYearlyData] = useState(false);
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
+  const summaryTableRef = useRef(null);
   
   if (!data.length) return <div>Loading table...</div>;
 
@@ -180,8 +182,14 @@ export default function NRMPTable({ data, headers, yearRange, selectedSpecialtie
       {/* Table Header with Toggle */}
       <div className="table-header-row">
         <h3 className="table-title">
-          NRMP Data for {selectedSpecialties.length === 0 ? "All" : "Selected"} Specialties ({yearRange[0]} - {yearRange[1]}) - {uniqueInstitutionsCount} Sponsoring Institutions
-          <span className="median-match-stat"> | Median Match Rate: {medianMatchPercentage}%</span>
+          <span className="title-text">
+            NRMP Data for {selectedSpecialties.length === 0 ? "All" : "Selected"} Specialties ({yearRange[0]} - {yearRange[1]}) - {uniqueInstitutionsCount} Sponsoring Institutions
+            <span className="median-match-stat"> | Median Match Rate: {medianMatchPercentage}%</span>
+          </span>
+          <PDFExport 
+            tableRef={summaryTableRef} 
+            filename={`nrmp-summary-${yearRange[0]}-${yearRange[1]}`} 
+          />
         </h3>
         <button 
           className={`yearly-data-toggle ${showYearlyData ? 'active' : ''}`}
@@ -204,7 +212,7 @@ export default function NRMPTable({ data, headers, yearRange, selectedSpecialtie
                 <p>Try selecting different specialties or adjusting the year range.</p>
               </div>
             ) : (
-              <table className="nrmp-table">
+              <table className="nrmp-table" ref={summaryTableRef}>
                 <thead>
                   <tr>
                     {summaryHeaders.map((col) => {
