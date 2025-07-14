@@ -224,8 +224,7 @@
 }
 
 /* Yearly table specific styles */
-.yearly-table th,
-.yearly-table td {
+.yearly-table th {
   width: 75px;
   min-width: 75px;
   text-align: center;
@@ -238,26 +237,22 @@
   word-wrap: break-word;
 }
 
+/* Special styling for institution column in yearly table */
+.yearly-table th:first-child,
+.yearly-table td:first-child {
+  padding-left: 14px;
+  text-align: left;
+}
+
 /* Summary Column Styling */
 .summary-column {
-  background-color: #e8f4f8 !important;
   font-weight: 600;
   color: #003366;
-  border-left: 2px solid #003366;
-  border-right: 2px solid #003366;
-  text-align: center;
+  text-align: left;
 }
 
 .summary-column-header {
-  text-align: center !important;
-}
-
-.nrmp-table tr:nth-child(even) .summary-column {
-  background-color: #ddeef5 !important;
-}
-
-.nrmp-table tr:hover .summary-column {
-  background-color: #c7e3f0 !important;
+  text-align: left !important;
 }
 
 /* No Data Message */

@@ -238,8 +238,7 @@ export default function NRMPTable({ data, headers, yearRange, selectedSpecialtie
                         if (col === "Sponsoring Institution Cleaned") {
                           return (
                             <th key={col}>
-                              <div>SPONSORING</div>
-                              <div>INSTITUTION</div>
+                              SPONSORING INSTITUTION
                             </th>
                           );
                         } else {
