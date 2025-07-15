@@ -15,6 +15,15 @@ const PDFExport = ({ tableRef, filterRef, specialtyFilterRef, filename = 'nrmp-s
     setIsExporting(true);
     
     try {
+      // Determine the maximum width for consistent filter section widths
+      let maxFilterWidth = 0;
+      if (specialtyFilterRef && specialtyFilterRef.current) {
+        maxFilterWidth = Math.max(maxFilterWidth, specialtyFilterRef.current.scrollWidth);
+      }
+      if (filterRef && filterRef.current) {
+        maxFilterWidth = Math.max(maxFilterWidth, filterRef.current.scrollWidth);
+      }
+
       // First, capture the specialty filter section if available
       let specialtyFilterCanvas = null;
       if (specialtyFilterRef && specialtyFilterRef.current) {
@@ -24,7 +33,7 @@ const PDFExport = ({ tableRef, filterRef, specialtyFilterRef, filename = 'nrmp-s
           allowTaint: true,
           backgroundColor: '#ffffff',
           logging: false,
-          width: specialtyFilterRef.current.scrollWidth,
+          width: maxFilterWidth,
           height: specialtyFilterRef.current.scrollHeight,
         });
       }
@@ -38,7 +47,7 @@ const PDFExport = ({ tableRef, filterRef, specialtyFilterRef, filename = 'nrmp-s
           allowTaint: true,
           backgroundColor: '#ffffff',
           logging: false,
-          width: filterRef.current.scrollWidth,
+          width: maxFilterWidth,
           height: filterRef.current.scrollHeight,
         });
       }
