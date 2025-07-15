@@ -162,9 +162,9 @@ const PDFExport = ({ tableRef, filterRef, specialtyFilterRef, tableTitleRef, set
       // Add filter sections to first page if available
       let currentY = docHeaderHeight;
       
-      // Add specialty filter first
+      // Add specialty filter first (with offset to align with slider filters)
       if (specialtyFilterImgData) {
-        pdf.addImage(specialtyFilterImgData, 'PNG', 10, currentY, imgWidth, specialtyFilterImgHeight);
+        pdf.addImage(specialtyFilterImgData, 'PNG', 7.5, currentY, imgWidth, specialtyFilterImgHeight);
         currentY += specialtyFilterImgHeight + 5; // 5mm gap after specialty filter
       }
       
