@@ -3,7 +3,7 @@ import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import './PDFExport.css';
 
-const PDFExport = ({ tableRef, filterRef, specialtyFilterRef, setShowAllSelectedSpecialties, filename = 'nrmp-summary-report' }) => {
+const PDFExport = ({ tableRef, filterRef, specialtyFilterRef, tableTitleRef, setShowAllSelectedSpecialties, filename = 'nrmp-summary-report' }) => {
   const [isExporting, setIsExporting] = useState(false);
 
   const exportToPDF = async () => {
@@ -22,6 +22,9 @@ const PDFExport = ({ tableRef, filterRef, specialtyFilterRef, setShowAllSelected
       }
       if (filterRef && filterRef.current) {
         maxFilterWidth = Math.max(maxFilterWidth, filterRef.current.scrollWidth);
+      }
+      if (tableTitleRef && tableTitleRef.current) {
+        maxFilterWidth = Math.max(maxFilterWidth, tableTitleRef.current.scrollWidth);
       }
 
       // First, capture the specialty filter section if available
@@ -64,6 +67,20 @@ const PDFExport = ({ tableRef, filterRef, specialtyFilterRef, setShowAllSelected
         });
       }
 
+      // Capture the table title if available
+      let tableTitleCanvas = null;
+      if (tableTitleRef && tableTitleRef.current) {
+        tableTitleCanvas = await html2canvas(tableTitleRef.current, {
+          scale: 2,
+          useCORS: true,
+          allowTaint: true,
+          backgroundColor: '#ffffff',
+          logging: false,
+          width: maxFilterWidth,
+          height: tableTitleRef.current.scrollHeight,
+        });
+      }
+
       // Then, capture the table header
       const tableHeader = tableRef.current.querySelector('thead');
       const headerCanvas = await html2canvas(tableHeader, {
@@ -98,6 +115,7 @@ const PDFExport = ({ tableRef, filterRef, specialtyFilterRef, setShowAllSelected
       const bodyImgData = bodyCanvas.toDataURL('image/png');
       const filterImgData = filterCanvas ? filterCanvas.toDataURL('image/png') : null;
       const specialtyFilterImgData = specialtyFilterCanvas ? specialtyFilterCanvas.toDataURL('image/png') : null;
+      const tableTitleImgData = tableTitleCanvas ? tableTitleCanvas.toDataURL('image/png') : null;
       
       const pdf = new jsPDF({
         orientation: 'portrait',
@@ -115,11 +133,12 @@ const PDFExport = ({ tableRef, filterRef, specialtyFilterRef, setShowAllSelected
       const bodyImgHeight = (bodyCanvas.height * imgWidth) / bodyCanvas.width;
       const filterImgHeight = filterCanvas ? (filterCanvas.height * imgWidth) / filterCanvas.width : 0;
       const specialtyFilterImgHeight = specialtyFilterCanvas ? (specialtyFilterCanvas.height * imgWidth) / specialtyFilterCanvas.width : 0;
+      const tableTitleImgHeight = tableTitleCanvas ? (tableTitleCanvas.height * imgWidth) / tableTitleCanvas.width : 0;
 
       // Document header height reservation (title + date)
       const docHeaderHeight = 40;
-      // Available height for table content (accounting for doc header + specialty filter + slider filters + table header)
-      const availableHeight = pdfHeight - docHeaderHeight - specialtyFilterImgHeight - filterImgHeight - headerImgHeight - 10; // 10mm bottom margin
+      // Available height for table content (accounting for doc header + specialty filter + slider filters + table title + table header)
+      const availableHeight = pdfHeight - docHeaderHeight - specialtyFilterImgHeight - filterImgHeight - tableTitleImgHeight - headerImgHeight - 10; // 10mm bottom margin
 
       // Add title and date to first page
       const addHeader = (pageNum = 1) => {
@@ -154,6 +173,12 @@ const PDFExport = ({ tableRef, filterRef, specialtyFilterRef, setShowAllSelected
         pdf.addImage(filterImgData, 'PNG', 10, currentY, imgWidth, filterImgHeight);
         currentY += filterImgHeight + 5; // 5mm gap after slider filters
       }
+      
+      // Add table title below filters
+      if (tableTitleImgData) {
+        pdf.addImage(tableTitleImgData, 'PNG', 10, currentY, imgWidth, tableTitleImgHeight);
+        currentY += tableTitleImgHeight + 5; // 5mm gap after table title
+      }
 
       // Check if we need multiple pages
       if (bodyImgHeight <= availableHeight) {
@@ -176,22 +201,22 @@ const PDFExport = ({ tableRef, filterRef, specialtyFilterRef, setShowAllSelected
             addHeader(pageNumber);
           }
           
-          // Calculate Y position for table header (filters only on first page)
+          // Calculate Y position for table header (filters and title only on first page)
           let tableHeaderY = docHeaderHeight;
-          if (pageNumber === 1 && (specialtyFilterImgData || filterImgData)) {
-            tableHeaderY = currentY; // Use currentY which includes filter sections
+          if (pageNumber === 1 && (specialtyFilterImgData || filterImgData || tableTitleImgData)) {
+            tableHeaderY = currentY; // Use currentY which includes filter sections and table title
           }
           
           // Add table header to each page
           pdf.addImage(headerImgData, 'PNG', 10, tableHeaderY, imgWidth, headerImgHeight);
           
-          // Calculate available height for this page (different for first page with filters)
+          // Calculate available height for this page (different for first page with filters and title)
           let pageAvailableHeightPx = availableHeightPx;
-          if (pageNumber === 1 && (specialtyFilterImgData || filterImgData)) {
-            // First page has less space due to filter sections
+          if (pageNumber === 1 && (specialtyFilterImgData || filterImgData || tableTitleImgData)) {
+            // First page has less space due to filter sections and table title
             pageAvailableHeightPx = availableHeightPx;
           } else if (pageNumber > 1) {
-            // Subsequent pages have more space (no filter sections)
+            // Subsequent pages have more space (no filter sections or table title)
             const subsequentAvailableHeight = pdfHeight - docHeaderHeight - headerImgHeight - 10;
             pageAvailableHeightPx = (subsequentAvailableHeight * bodyCanvas.height) / bodyImgHeight;
           }

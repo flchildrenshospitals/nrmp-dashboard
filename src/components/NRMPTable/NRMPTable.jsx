@@ -7,6 +7,7 @@ export default function NRMPTable({ data, headers, yearRange, selectedSpecialtie
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
   const summaryTableRef = useRef(null);
   const filterSectionRef = useRef(null);
+  const tableTitleRef = useRef(null);
   
   if (!data.length) return <div>Loading table...</div>;
 
@@ -183,7 +184,7 @@ export default function NRMPTable({ data, headers, yearRange, selectedSpecialtie
       {/* Table Header with Toggle */}
       <div className="table-header-row">
         <h3 className="table-title">
-          <span className="title-text">
+          <span className="title-text" ref={tableTitleRef}>
             NRMP Data for {selectedSpecialties.length === 0 ? "All" : "Selected"} Specialties ({yearRange[0]} - {yearRange[1]}) - {uniqueInstitutionsCount} Sponsoring Institutions
             <span className="median-match-stat"> | Median Match Rate: {medianMatchPercentage}%</span>
           </span>
@@ -191,6 +192,7 @@ export default function NRMPTable({ data, headers, yearRange, selectedSpecialtie
             tableRef={summaryTableRef} 
             filterRef={filterSectionRef}
             specialtyFilterRef={specialtyFilterRef}
+            tableTitleRef={tableTitleRef}
             setShowAllSelectedSpecialties={setShowAllSelectedSpecialties}
             filename={`nrmp-summary-${yearRange[0]}-${yearRange[1]}`} 
           />
