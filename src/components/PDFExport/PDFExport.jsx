@@ -140,6 +140,47 @@ const PDFExport = ({ tableRef, filterRef, specialtyFilterRef, tableTitleRef, set
       // Available height for table content (accounting for doc header + specialty filter + slider filters + table title + table header)
       const availableHeight = pdfHeight - docHeaderHeight - specialtyFilterImgHeight - filterImgHeight - tableTitleImgHeight - headerImgHeight - 10; // 10mm bottom margin
 
+      // Calculate total pages upfront for proper numbering
+      let totalPages = 1;
+      if (bodyImgHeight > availableHeight) {
+        const availableHeightPx = (availableHeight * bodyCanvas.height) / bodyImgHeight;
+        const scaleFactor = bodyCanvas.height / tableBody.scrollHeight;
+        
+        let tempCurrentRow = 0;
+        let tempPageCount = 0;
+        
+        while (tempCurrentRow < totalRows) {
+          tempPageCount++;
+          let tempRowsOnPage = 0;
+          let tempAccumulatedHeight = 0;
+          
+          // Use different available height for first page vs subsequent pages
+          let tempPageAvailableHeightPx = availableHeightPx;
+          if (tempPageCount > 1) {
+            const subsequentAvailableHeight = pdfHeight - docHeaderHeight - headerImgHeight - 10;
+            tempPageAvailableHeightPx = (subsequentAvailableHeight * bodyCanvas.height) / bodyImgHeight;
+          }
+          
+          for (let i = tempCurrentRow; i < totalRows; i++) {
+            const rowHeightPx = rowHeights[i] * scaleFactor;
+            if (tempAccumulatedHeight + rowHeightPx <= tempPageAvailableHeightPx) {
+              tempAccumulatedHeight += rowHeightPx;
+              tempRowsOnPage++;
+            } else {
+              break;
+            }
+          }
+          
+          if (tempRowsOnPage === 0) {
+            tempRowsOnPage = 1;
+          }
+          
+          tempCurrentRow += tempRowsOnPage;
+        }
+        
+        totalPages = tempPageCount;
+      }
+
       // Add title and date to first page
       const addHeader = (pageNum = 1) => {
         pdf.setFontSize(16);
@@ -151,9 +192,7 @@ const PDFExport = ({ tableRef, filterRef, specialtyFilterRef, tableTitleRef, set
         const currentDate = new Date().toLocaleDateString();
         pdf.text(`Generated on: ${currentDate}`, 10, 25);
         
-        if (pageNum > 1) {
-          pdf.text(`Page ${pageNum}`, pdfWidth - 30, 25);
-        }
+        pdf.text(`Page ${pageNum} of ${totalPages}`, pdfWidth - 35, 25);
       };
 
       // Add header to first page
