@@ -5,7 +5,7 @@ export default function Header() {
     <header className="dashboard-header">
       <h1>NRMP Data Dashboard</h1>
       <p className="dashboard-tagline">
-        Visualize, filter, and export National Residency Match data with ease.
+        Visualize, filter, and export National Residency Match data
       </p>
     </header>
   );
