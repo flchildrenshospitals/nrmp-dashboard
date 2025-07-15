@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from "react";
 import "./SpecialtyFilter.css";
 
-export default function SpecialtyFilter({ data, selectedSpecialties, onSpecialtyChange }) {
+export default function SpecialtyFilter({ data, selectedSpecialties, onSpecialtyChange, showAllSelected = false }) {
   const [isExpanded, setIsExpanded] = useState(false);
 
   // Extract unique specialties from data
@@ -146,17 +146,24 @@ export default function SpecialtyFilter({ data, selectedSpecialties, onSpecialty
       {!isExpanded && selectedSpecialties.length > 0 && selectedSpecialties.length < uniqueSpecialties.length && (
         <div className="filter-summary">
           {(() => {
-            const maxDisplay = 3; // Maximum number of specialties to show
             const sortedSpecialties = [...selectedSpecialties].sort();
-            const displaySpecialties = sortedSpecialties.slice(0, maxDisplay);
-            const remaining = selectedSpecialties.length - maxDisplay;
             
-            let text = displaySpecialties.join(", ");
-            if (remaining > 0) {
-              text += ` and ${remaining} more`;
+            if (showAllSelected) {
+              // For PDF export, show all selected specialties
+              return sortedSpecialties.join(", ");
+            } else {
+              // For web interface, show truncated version
+              const maxDisplay = 3; // Maximum number of specialties to show
+              const displaySpecialties = sortedSpecialties.slice(0, maxDisplay);
+              const remaining = selectedSpecialties.length - maxDisplay;
+              
+              let text = displaySpecialties.join(", ");
+              if (remaining > 0) {
+                text += ` and ${remaining} more`;
+              }
+              
+              return text;
             }
-            
-            return text;
           })()}
         </div>
       )}

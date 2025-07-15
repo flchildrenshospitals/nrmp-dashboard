@@ -18,6 +18,7 @@ export default function App() {
   const [selectedSpecialties, setSelectedSpecialties] = useState([]);
   const [snhafFilter, setSnhafFilter] = useState('ALL'); // 'ALL', 'SNHAF', 'NOT'
   const [dataLoaded, setDataLoaded] = useState(false);
+  const [showAllSelectedSpecialties, setShowAllSelectedSpecialties] = useState(false);
   const specialtyFilterRef = useRef(null);
 
   useEffect(() => {
@@ -46,6 +47,7 @@ export default function App() {
                 data={data}
                 selectedSpecialties={selectedSpecialties}
                 onSpecialtyChange={setSelectedSpecialties}
+                showAllSelected={showAllSelectedSpecialties}
               />
             </div>
                         <NRMPTable 
@@ -55,6 +57,7 @@ export default function App() {
             selectedSpecialties={selectedSpecialties}
             snhafFilter={snhafFilter}
             specialtyFilterRef={specialtyFilterRef}
+            setShowAllSelectedSpecialties={setShowAllSelectedSpecialties}
             sliderComponent={
               <div style={{ display: 'flex', alignItems: 'flex-start' }}>
                 <YearSlider

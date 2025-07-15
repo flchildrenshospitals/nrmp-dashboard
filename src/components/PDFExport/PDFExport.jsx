@@ -3,7 +3,7 @@ import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import './PDFExport.css';
 
-const PDFExport = ({ tableRef, filterRef, specialtyFilterRef, filename = 'nrmp-summary-report' }) => {
+const PDFExport = ({ tableRef, filterRef, specialtyFilterRef, setShowAllSelectedSpecialties, filename = 'nrmp-summary-report' }) => {
   const [isExporting, setIsExporting] = useState(false);
 
   const exportToPDF = async () => {
@@ -27,6 +27,13 @@ const PDFExport = ({ tableRef, filterRef, specialtyFilterRef, filename = 'nrmp-s
       // First, capture the specialty filter section if available
       let specialtyFilterCanvas = null;
       if (specialtyFilterRef && specialtyFilterRef.current) {
+        // Temporarily enable "show all" mode for PDF export
+        if (setShowAllSelectedSpecialties) {
+          setShowAllSelectedSpecialties(true);
+          // Wait a moment for the component to re-render
+          await new Promise(resolve => setTimeout(resolve, 100));
+        }
+        
         specialtyFilterCanvas = await html2canvas(specialtyFilterRef.current, {
           scale: 2,
           useCORS: true,
@@ -36,6 +43,11 @@ const PDFExport = ({ tableRef, filterRef, specialtyFilterRef, filename = 'nrmp-s
           width: maxFilterWidth,
           height: specialtyFilterRef.current.scrollHeight,
         });
+        
+        // Reset back to normal mode
+        if (setShowAllSelectedSpecialties) {
+          setShowAllSelectedSpecialties(false);
+        }
       }
 
       // Then, capture the slider filter section if available
