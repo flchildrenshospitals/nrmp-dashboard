@@ -2,10 +2,11 @@ import React, { useState, useRef } from "react";
 import "./NRMPTable.css";
 import PDFExport from "../PDFExport/PDFExport";
 
-export default function NRMPTable({ data, headers, yearRange, selectedSpecialties, snhafFilter, sliderComponent }) {
+export default function NRMPTable({ data, headers, yearRange, selectedSpecialties, snhafFilter, specialtyFilterRef, sliderComponent }) {
   const [showYearlyData, setShowYearlyData] = useState(false);
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
   const summaryTableRef = useRef(null);
+  const filterSectionRef = useRef(null);
   
   if (!data.length) return <div>Loading table...</div>;
 
@@ -175,7 +176,7 @@ export default function NRMPTable({ data, headers, yearRange, selectedSpecialtie
   return (
     <div className="nrmp-dashboard-container">
       {/* Slider Section */}
-      <div className="dashboard-header-section">
+      <div className="dashboard-header-section" ref={filterSectionRef}>
         {sliderComponent}
       </div>
 
@@ -188,6 +189,8 @@ export default function NRMPTable({ data, headers, yearRange, selectedSpecialtie
           </span>
           <PDFExport 
             tableRef={summaryTableRef} 
+            filterRef={filterSectionRef}
+            specialtyFilterRef={specialtyFilterRef}
             filename={`nrmp-summary-${yearRange[0]}-${yearRange[1]}`} 
           />
         </h3>

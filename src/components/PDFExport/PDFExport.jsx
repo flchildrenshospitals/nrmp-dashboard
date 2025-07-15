@@ -3,7 +3,7 @@ import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import './PDFExport.css';
 
-const PDFExport = ({ tableRef, filename = 'nrmp-summary-report' }) => {
+const PDFExport = ({ tableRef, filterRef, specialtyFilterRef, filename = 'nrmp-summary-report' }) => {
   const [isExporting, setIsExporting] = useState(false);
 
   const exportToPDF = async () => {
@@ -15,7 +15,35 @@ const PDFExport = ({ tableRef, filename = 'nrmp-summary-report' }) => {
     setIsExporting(true);
     
     try {
-      // First, capture the table header
+      // First, capture the specialty filter section if available
+      let specialtyFilterCanvas = null;
+      if (specialtyFilterRef && specialtyFilterRef.current) {
+        specialtyFilterCanvas = await html2canvas(specialtyFilterRef.current, {
+          scale: 2,
+          useCORS: true,
+          allowTaint: true,
+          backgroundColor: '#ffffff',
+          logging: false,
+          width: specialtyFilterRef.current.scrollWidth,
+          height: specialtyFilterRef.current.scrollHeight,
+        });
+      }
+
+      // Then, capture the slider filter section if available
+      let filterCanvas = null;
+      if (filterRef && filterRef.current) {
+        filterCanvas = await html2canvas(filterRef.current, {
+          scale: 2,
+          useCORS: true,
+          allowTaint: true,
+          backgroundColor: '#ffffff',
+          logging: false,
+          width: filterRef.current.scrollWidth,
+          height: filterRef.current.scrollHeight,
+        });
+      }
+
+      // Then, capture the table header
       const tableHeader = tableRef.current.querySelector('thead');
       const headerCanvas = await html2canvas(tableHeader, {
         scale: 2,
@@ -47,6 +75,9 @@ const PDFExport = ({ tableRef, filename = 'nrmp-summary-report' }) => {
       // Calculate PDF dimensions
       const headerImgData = headerCanvas.toDataURL('image/png');
       const bodyImgData = bodyCanvas.toDataURL('image/png');
+      const filterImgData = filterCanvas ? filterCanvas.toDataURL('image/png') : null;
+      const specialtyFilterImgData = specialtyFilterCanvas ? specialtyFilterCanvas.toDataURL('image/png') : null;
+      
       const pdf = new jsPDF({
         orientation: 'portrait',
         unit: 'mm',
@@ -61,11 +92,13 @@ const PDFExport = ({ tableRef, filename = 'nrmp-summary-report' }) => {
       const imgWidth = pdfWidth - 20; // 10mm margin on each side
       const headerImgHeight = (headerCanvas.height * imgWidth) / headerCanvas.width;
       const bodyImgHeight = (bodyCanvas.height * imgWidth) / bodyCanvas.width;
+      const filterImgHeight = filterCanvas ? (filterCanvas.height * imgWidth) / filterCanvas.width : 0;
+      const specialtyFilterImgHeight = specialtyFilterCanvas ? (specialtyFilterCanvas.height * imgWidth) / specialtyFilterCanvas.width : 0;
 
       // Document header height reservation (title + date)
       const docHeaderHeight = 40;
-      // Available height for table content (accounting for doc header + table header)
-      const availableHeight = pdfHeight - docHeaderHeight - headerImgHeight - 10; // 10mm bottom margin
+      // Available height for table content (accounting for doc header + specialty filter + slider filters + table header)
+      const availableHeight = pdfHeight - docHeaderHeight - specialtyFilterImgHeight - filterImgHeight - headerImgHeight - 10; // 10mm bottom margin
 
       // Add title and date to first page
       const addHeader = (pageNum = 1) => {
@@ -86,13 +119,28 @@ const PDFExport = ({ tableRef, filename = 'nrmp-summary-report' }) => {
       // Add header to first page
       addHeader(1);
 
+      // Add filter sections to first page if available
+      let currentY = docHeaderHeight;
+      
+      // Add specialty filter first
+      if (specialtyFilterImgData) {
+        pdf.addImage(specialtyFilterImgData, 'PNG', 10, currentY, imgWidth, specialtyFilterImgHeight);
+        currentY += specialtyFilterImgHeight + 5; // 5mm gap after specialty filter
+      }
+      
+      // Add slider filters below specialty filter
+      if (filterImgData) {
+        pdf.addImage(filterImgData, 'PNG', 10, currentY, imgWidth, filterImgHeight);
+        currentY += filterImgHeight + 5; // 5mm gap after slider filters
+      }
+
       // Check if we need multiple pages
       if (bodyImgHeight <= availableHeight) {
         // Single page - fits entirely
         // Add table header
-        pdf.addImage(headerImgData, 'PNG', 10, docHeaderHeight, imgWidth, headerImgHeight);
+        pdf.addImage(headerImgData, 'PNG', 10, currentY, imgWidth, headerImgHeight);
         // Add table body below header
-        pdf.addImage(bodyImgData, 'PNG', 10, docHeaderHeight + headerImgHeight, imgWidth, bodyImgHeight);
+        pdf.addImage(bodyImgData, 'PNG', 10, currentY + headerImgHeight, imgWidth, bodyImgHeight);
       } else {
         // Multiple pages needed - split at row boundaries
         const availableHeightPx = (availableHeight * bodyCanvas.height) / bodyImgHeight;
@@ -107,8 +155,25 @@ const PDFExport = ({ tableRef, filename = 'nrmp-summary-report' }) => {
             addHeader(pageNumber);
           }
           
+          // Calculate Y position for table header (filters only on first page)
+          let tableHeaderY = docHeaderHeight;
+          if (pageNumber === 1 && (specialtyFilterImgData || filterImgData)) {
+            tableHeaderY = currentY; // Use currentY which includes filter sections
+          }
+          
           // Add table header to each page
-          pdf.addImage(headerImgData, 'PNG', 10, docHeaderHeight, imgWidth, headerImgHeight);
+          pdf.addImage(headerImgData, 'PNG', 10, tableHeaderY, imgWidth, headerImgHeight);
+          
+          // Calculate available height for this page (different for first page with filters)
+          let pageAvailableHeightPx = availableHeightPx;
+          if (pageNumber === 1 && (specialtyFilterImgData || filterImgData)) {
+            // First page has less space due to filter sections
+            pageAvailableHeightPx = availableHeightPx;
+          } else if (pageNumber > 1) {
+            // Subsequent pages have more space (no filter sections)
+            const subsequentAvailableHeight = pdfHeight - docHeaderHeight - headerImgHeight - 10;
+            pageAvailableHeightPx = (subsequentAvailableHeight * bodyCanvas.height) / bodyImgHeight;
+          }
           
           // Calculate how many rows can fit on this page
           let rowsOnPage = 0;
@@ -116,7 +181,7 @@ const PDFExport = ({ tableRef, filename = 'nrmp-summary-report' }) => {
           
           for (let i = currentRow; i < totalRows; i++) {
             const rowHeightPx = rowHeights[i] * scaleFactor;
-            if (accumulatedHeight + rowHeightPx <= availableHeightPx) {
+            if (accumulatedHeight + rowHeightPx <= pageAvailableHeightPx) {
               accumulatedHeight += rowHeightPx;
               rowsOnPage++;
             } else {
@@ -151,7 +216,7 @@ const PDFExport = ({ tableRef, filename = 'nrmp-summary-report' }) => {
           const pageImgHeight = (accumulatedHeight * imgWidth) / bodyCanvas.width;
           
           // Add body content below the header
-          pdf.addImage(pageImgData, 'PNG', 10, docHeaderHeight + headerImgHeight, imgWidth, pageImgHeight);
+          pdf.addImage(pageImgData, 'PNG', 10, tableHeaderY + headerImgHeight, imgWidth, pageImgHeight);
           
           currentRow += rowsOnPage;
           pageNumber++;

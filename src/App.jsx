@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Papa from "papaparse";
 import Header from "./components/Header/Header";
 import NRMPTable from "./components/NRMPTable/NRMPTable";
@@ -18,6 +18,7 @@ export default function App() {
   const [selectedSpecialties, setSelectedSpecialties] = useState([]);
   const [snhafFilter, setSnhafFilter] = useState('ALL'); // 'ALL', 'SNHAF', 'NOT'
   const [dataLoaded, setDataLoaded] = useState(false);
+  const specialtyFilterRef = useRef(null);
 
   useEffect(() => {
     Papa.parse(CSV_URL, {
@@ -40,17 +41,20 @@ export default function App() {
         <Header />
         {dataLoaded && (
           <>
-            <SpecialtyFilter 
-              data={data}
-              selectedSpecialties={selectedSpecialties}
-              onSpecialtyChange={setSelectedSpecialties}
-            />
+            <div ref={specialtyFilterRef}>
+              <SpecialtyFilter 
+                data={data}
+                selectedSpecialties={selectedSpecialties}
+                onSpecialtyChange={setSelectedSpecialties}
+              />
+            </div>
                         <NRMPTable 
             data={data}
             headers={headers}
             yearRange={yearRange}
             selectedSpecialties={selectedSpecialties}
             snhafFilter={snhafFilter}
+            specialtyFilterRef={specialtyFilterRef}
             sliderComponent={
               <div style={{ display: 'flex', alignItems: 'flex-start' }}>
                 <YearSlider
