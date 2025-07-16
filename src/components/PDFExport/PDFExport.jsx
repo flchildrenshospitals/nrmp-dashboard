@@ -190,7 +190,8 @@ const PDFExport = ({ tableRef, filterRef, specialtyFilterRef, tableTitleRef, set
         pdf.setFontSize(10);
         pdf.setFont(undefined, 'normal');
         const currentDate = new Date().toLocaleDateString();
-        pdf.text(`Generated on: ${currentDate}`, 10, 25);
+        const currentTime = new Date().toLocaleTimeString();
+        pdf.text(`Generated on: ${currentDate} at ${currentTime}`, 10, 25);
         
         pdf.text(`Page ${pageNum} of ${totalPages}`, pdfWidth - 35, 25);
       };
