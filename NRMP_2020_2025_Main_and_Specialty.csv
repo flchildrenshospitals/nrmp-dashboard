@@ -87,15 +87,15 @@ Main,Florida International Univ,Florida International Univ,NOT,Miami,Miami,Surge
 Main,Florida International Univ,Florida International Univ,NOT,Miami,Miami,Surg-Prelim/Radiology,Surgery-Preliminary,2317440P1,2,1,0,0,0,0,0,0,0,0,0,0
 Main,Florida State University COM,Florida State University COM (Sarasota),SNHAF,Tallahassee,Sarasota,Emergency Medicine/Sarasota,Emergency Medicine,1826110C0,9,9,9,9,9,9,9,9,9,9,9,9
 Main,Florida State University COM,Florida State University COM (Fort Myers - LH),SNHAF,Tallahassee,Fort Myers,Family Medicine/Lee Memorial,Family Medicine,1826120C0,10,10,9,9,9,9,8,8,8,8,8,8
-Main,Florida State University COM,Florida State University COM (Winter Haven),SNHAF,Tallahassee,Winter Haven,Family Medicine/Winter Haven,Family Medicine,1826120C1,8,5,8,8,8,8,8,8,6,6,6,6
-Main,Florida State University COM,Florida State University COM (Tallahassee),SNHAF,Tallahassee,Tallahassee,Internal Medicine/Tallahassee,Internal Medicine,1826140C0,11,11,10,8,10,10,8,8,8,8,7,7
+Main,Florida State University COM,Florida State University COM (Winter Haven),NOT,Tallahassee,Winter Haven,Family Medicine/Winter Haven,Family Medicine,1826120C1,8,5,8,8,8,8,8,8,6,6,6,6
+Main,Florida State University COM,Florida State University COM (Tallahassee),NOT,Tallahassee,Tallahassee,Internal Medicine/Tallahassee,Internal Medicine,1826140C0,11,11,10,8,10,10,8,8,8,8,7,7
 Main,Florida State University COM,Florida State University COM (Sarasota),SNHAF,Tallahassee,Sarasota,Internal Medicine/Sarasota,Internal Medicine,1826140C1,16,16,14,14,13,13,13,13,13,13,13,13
 Main,Florida State University COM,Florida State University COM (Cape Coral - LH),SNHAF,Tallahassee,Cape Coral,Internal Medicine/Cape Coral,Internal Medicine,1826140C2,12,12,12,12,12,12,12,12,0,0,0,0
-Main,Florida State University COM,Florida State University COM (Tallahassee),SNHAF,Tallahassee,Tallahassee,Med-Prelim/Tallahassee,Medicine-Preliminary,1826140P0,2,2,2,1,1,1,2,2,2,2,2,1
-Main,Florida State University COM,Florida State University COM (Tallahassee),SNHAF,Tallahassee,Tallahassee,Psychiatry,Psychiatry,1826400C0,4,4,0,0,0,0,0,0,0,0,0,0
-Main,Florida State University COM,Florida State University COM (Tallahassee),SNHAF,Tallahassee,Tallahassee,General Surgery,General Surgery,1826440C0,3,3,2,2,2,2,2,2,2,2,2,2
-Main,Florida State University COM,Florida State University COM (Tallahassee),SNHAF,Tallahassee,Tallahassee,Surgery-Preliminary,Surgery-Preliminary,1826440P0,2,1,2,0,2,0,2,0,2,0,2,1
-Main,Florida State University COM,Florida State University COM (Tallahassee),SNHAF,Tallahassee,Tallahassee,Transitional,Transitional,1826999P0,12,12,13,13,0,0,0,0,0,0,0,0
+Main,Florida State University COM,Florida State University COM (Tallahassee),NOT,Tallahassee,Tallahassee,Med-Prelim/Tallahassee,Medicine-Preliminary,1826140P0,2,2,2,1,1,1,2,2,2,2,2,1
+Main,Florida State University COM,Florida State University COM (Tallahassee),NOT,Tallahassee,Tallahassee,Psychiatry,Psychiatry,1826400C0,4,4,0,0,0,0,0,0,0,0,0,0
+Main,Florida State University COM,Florida State University COM (Tallahassee),NOT,Tallahassee,Tallahassee,General Surgery,General Surgery,1826440C0,3,3,2,2,2,2,2,2,2,2,2,2
+Main,Florida State University COM,Florida State University COM (Tallahassee),NOT,Tallahassee,Tallahassee,Surgery-Preliminary,Surgery-Preliminary,1826440P0,2,1,2,0,2,0,2,0,2,0,2,1
+Main,Florida State University COM,Florida State University COM (Tallahassee),NOT,Tallahassee,Tallahassee,Transitional,Transitional,1826999P0,12,12,13,13,0,0,0,0,0,0,0,0
 Main,Halifax Med Ctr-FL,Halifax Med Ctr,SNHAF,Daytona Beach,Daytona Beach,Family Medicine,Family Medicine,1629120C0,8,4,8,8,8,8,8,7,8,8,8,8
 Main,HCA Healthcare East FL Division GME,HCA Healthcare East FL Division GME,NOT,Margate,Tamiami,Anesthesiology/Kendall,Anesthesiology,2232040A0,6,6,6,6,6,6,6,6,0,0,0,0
 Main,HCA Healthcare East FL Division GME,HCA Healthcare East FL Division GME,NOT,Margate,Plantation,Anesthesiology/Westside,Anesthesiology,2232040C0,6,6,6,6,6,6,6,6,6,6,0,0
@@ -388,30 +388,30 @@ Main,U Florida COM-Shands Hosp,U Florida COM-Shands Hosp,SNHAF,Gainesville,Gaine
 Main,U Florida COM-Shands Hosp,U Florida COM-Shands Hosp,SNHAF,Gainesville,Gainesville,Surgery-Preliminary,Surgery-Preliminary,1824440P0,8,4,8,7,8,6,8,3,8,8,8,8
 Main,U Florida COM-Shands Hosp,U Florida COM-Shands Hosp,SNHAF,Gainesville,Gainesville,Thoracic Surgery,Thoracic Surgery,1824461C0,1,1,0,0,1,1,1,1,1,1,0,0
 Main,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Tampa General,SNHAF,Tampa,Tampa,Anesthesiology,Anesthesiology,1109040C0,12,12,8,8,0,0,0,0,0,0,0,0
-Main,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Tampa General,SNHAF,Tampa,Tampa,Dermatology,Dermatology,1109080A0,4,4,4,4,4,4,4,4,4,4,4,4
+Main,U South Florida Morsani COM-Tampa,U South Florida Morsani COM,NOT,Tampa,Tampa,Dermatology,Dermatology,1109080A0,4,4,4,4,4,4,4,4,4,4,4,4
 Main,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Tampa General,SNHAF,Tampa,Tampa,Emergency Medicine,Emergency Medicine,1109110C0,10,10,10,10,10,10,10,10,10,10,10,10
-Main,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Tampa General,SNHAF,Tampa,Tampa,Family Medicine/MPM,Family Medicine,1109120C0,8,8,8,8,8,8,8,8,8,8,8,6
+Main,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Morton Plant,NOT,Tampa,Tampa,Family Medicine/MPM,Family Medicine,1109120C0,8,8,8,8,8,8,8,8,8,8,8,6
 Main,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Tampa General,SNHAF,Tampa,Tampa,Family Medicine/TGH,Family Medicine,1109120C1,8,8,0,0,0,0,0,0,0,0,0,0
 Main,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Tampa General,SNHAF,Tampa,Tampa,Internal Medicine,Internal Medicine,1109140C0,35,35,34,34,33,33,33,33,33,33,33,33
 Main,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Tampa General,SNHAF,Tampa,Tampa,Medicine-Preliminary,Medicine-Preliminary,1109140P0,4,4,6,6,8,5,6,0,3,2,9,4
-Main,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Tampa General,SNHAF,Tampa,Tampa,Med-Prelim/Dermatology,Medicine-Preliminary,1109140P1,2,2,2,2,3,0,1,1,2,2,1,1
+Main,U South Florida Morsani COM-Tampa,U South Florida Morsani COM,NOT,Tampa,Tampa,Med-Prelim/Dermatology,Medicine-Preliminary,1109140P1,2,2,2,2,3,0,1,1,2,2,1,1
 Main,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Tampa General,SNHAF,Tampa,Tampa,Med-Prelim/Radiology,Medicine-Preliminary,1109140P2,2,2,3,3,1,1,4,4,3,3,4,4
-Main,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Tampa General,SNHAF,Tampa,Tampa,Med-Prelim/Radiation Onc,Medicine-Preliminary,1109140P3,2,2,1,1,0,0,2,2,2,2,0,0
-Main,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Tampa General,SNHAF,Tampa,Tampa,Med-Prelim/Ophthalmology,Medicine-Preliminary,1109140P4,0,0,0,0,4,4,4,4,4,4,0,0
+Main,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Moffitt,NOT,Tampa,Tampa,Med-Prelim/Radiation Onc,Medicine-Preliminary,1109140P3,2,2,1,1,0,0,2,2,2,2,0,0
+Main,U South Florida Morsani COM-Tampa,U South Florida Morsani COM,NOT,Tampa,Tampa,Med-Prelim/Ophthalmology,Medicine-Preliminary,1109140P4,0,0,0,0,4,4,4,4,4,4,0,0
 Main,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Tampa General,SNHAF,Tampa,Tampa,Neurological Surgery,Neurological Surgery,1109160C0,3,3,2,2,2,2,2,2,2,2,2,2
-Main,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Tampa General,SNHAF,Tampa,Tampa,Neurology,Neurology,1109180C0,8,8,8,8,8,8,8,8,8,8,8,8
+Main,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-VA,NOT,Tampa,Tampa,Neurology,Neurology,1109180C0,8,8,8,8,8,8,8,8,8,8,8,8
 Main,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Tampa General,SNHAF,Tampa,Tampa,Obstetrics-Gynecology,Obstetrics-Gynecology,1109220C0,7,7,6,6,6,6,6,6,6,6,6,6
 Main,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Tampa General,SNHAF,Tampa,Tampa,Orthopaedic Surgery,Orthopaedic Surgery,1109260C0,4,4,4,4,4,4,4,4,4,4,4,4
 Main,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Tampa General,SNHAF,Tampa,Tampa,Otolaryngology,Otolaryngology,1109280C0,3,3,3,3,3,3,3,3,3,3,3,3
-Main,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Tampa General,SNHAF,Tampa,Tampa,Pathology,Pathology,1109300C0,3,3,3,3,3,3,3,3,3,3,4,4
+Main,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Moffitt,NOT,Tampa,Tampa,Pathology,Pathology,1109300C0,3,3,3,3,3,3,3,3,3,3,4,4
 Main,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Tampa General,SNHAF,Tampa,Tampa,Pediatrics,Pediatrics,1109320C0,12,12,12,12,12,12,12,12,12,12,12,12
-Main,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Tampa General,SNHAF,Tampa,Tampa,Phys Medicine & Rehab,Physical Medicine & Rehabilitation,1109340C2,4,4,3,3,3,3,3,3,3,2,3,3
+Main,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-VA,NOT,Tampa,Tampa,Phys Medicine & Rehab,Physical Medicine & Rehabilitation,1109340C2,4,4,3,3,3,3,3,3,3,2,3,3
 Main,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Tampa General,SNHAF,Tampa,Tampa,Plastic Surgery (Integrated),Plastic Surgery,1109362C0,4,4,4,4,4,4,4,4,4,4,4,4
-Main,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Tampa General,SNHAF,Tampa,Tampa,Psychiatry,Psychiatry,1109400C0,10,10,10,10,10,10,10,10,10,10,10,10
+Main,U South Florida Morsani COM-Tampa,U South Florida Morsani COM,NOT,Tampa,Tampa,Psychiatry,Psychiatry,1109400C0,10,10,10,10,10,10,10,10,10,10,10,10
 Main,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Tampa General,SNHAF,Tampa,Tampa,Interventional Radiology (Integ),Interventional Radiology,1109416A0,2,2,2,2,2,2,2,2,2,2,2,2
 Main,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Tampa General,SNHAF,Tampa,Tampa,Radiology-Diagnostic,Radiology-Diagnostic,1109420A0,6,6,6,6,6,6,6,6,6,6,6,6
 Main,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Tampa General,SNHAF,Tampa,Tampa,Radiology-Diagnostic,Radiology-Diagnostic,1109420R0,0,0,0,0,0,0,1,1,0,0,0,0
-Main,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Tampa General,SNHAF,Tampa,Tampa,Radiation Oncology,Radiation Oncology,1109430A0,3,3,2,2,3,2,2,2,3,3,2,2
+Main,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Moffitt,NOT,Tampa,Tampa,Radiation Oncology,Radiation Oncology,1109430A0,3,3,2,2,3,2,2,2,3,3,2,2
 Main,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Tampa General,SNHAF,Tampa,Tampa,General Surgery,General Surgery,1109440C0,7,7,7,7,7,7,6,6,6,6,6,6
 Main,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Tampa General,SNHAF,Tampa,Tampa,Surgery-Preliminary,Surgery-Preliminary,1109440P0,4,4,4,3,4,3,4,3,4,4,4,4
 Main,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Tampa General,SNHAF,Tampa,Tampa,Vascular Surgery,Vascular Surgery,1109451C0,2,2,2,2,2,2,2,2,2,2,2,0
@@ -525,7 +525,7 @@ Specialty,FAU-Schmidt COM-FL,FAU-Schmidt COM,NOT,Boca Raton,Boca Raton,Vascular 
 Specialty,FAU-Schmidt COM-FL,FAU-Schmidt COM,NOT,Boca Raton,Boca Raton,Hospice and Palliative Medicine,Hospice and Palliative Medicine,1586540F0,0,0,1,1,0,0,0,0,1,1,1,1
 Specialty,Florida International Univ,Florida International Univ,NOT,Miami,Miami,Sports Medicine (Fam Med),Sports Medicine,2317127F0,1,1,0,0,0,0,0,0,0,0,0,0
 Specialty,Florida Orthopedic Institute,Florida Orthopedic Institute,NOT,Tampa,Tampa,Orthopaedic Hand Surgery,Orthopaedic Hand Surgery,1712263F0,3,3,3,3,3,3,3,3,3,3,3,3
-Specialty,Florida State University COM,Florida State University COM (Tallahassee),SNHAF,Tallahassee,Tallahassee,Hospice and Palliative Medicine,Hospice and Palliative Medicine,1826540F0,2,2,2,2,2,2,2,2,2,1,2,1
+Specialty,Florida State University COM,Florida State University COM (Tallahassee),NOT,Tallahassee,Tallahassee,Hospice and Palliative Medicine,Hospice and Palliative Medicine,1826540F0,2,2,2,2,2,2,2,2,2,1,2,1
 Specialty,Halifax Med Ctr-FL,Halifax Med Ctr,SNHAF,Daytona Beach,Daytona Beach,Sports Medicine (Fam Med),Sports Medicine,1629127F0,1,1,1,1,1,1,1,1,1,1,1,1
 Specialty,HCA Healthcare East FL Division GME,HCA Healthcare East FL Division GME,NOT,Margate,Aventura,Cardiovascular Disease/Aventura,Cardiovascular Disease,2232141F0,2,2,2,2,2,2,2,2,0,0,0,0
 Specialty,HCA Healthcare East FL Division GME,HCA Healthcare East FL Division GME,NOT,Margate,Aventura,Gastroenterology/Clinical/Aventura,Gastroenterology,2232144F0,2,2,2,2,2,2,2,2,0,0,0,0
@@ -829,45 +829,45 @@ Specialty,U Miami / Jackson Health System-FL,U Miami/Jackson Health System,SNHAF
 Specialty,U Miami / Jackson Health System-FL,U Miami/Jackson Health System,SNHAF,Miami,Miami,Laryngology,Laryngology,1104L01F0,1,0,1,1,1,1,1,0,1,0,0,0
 Specialty,U Miami / Jackson Health System-FL,U Miami/Jackson Health System,SNHAF,Miami,Miami,Emergency Radiology,Emergency Radiology,1104R04F0,2,1,0,0,2,1,0,0,0,0,0,0
 Specialty,U Miami / Jackson Health System-FL,U Miami/Jackson Health System,SNHAF,Miami,Miami,Musculoskeletal Radiology,Musculoskeletal Radiology,1104R26F0,2,1,2,2,2,2,2,0,2,1,2,2
-Specialty,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Tampa General,SNHAF,Tampa,Tampa,Allergy & Immunology/Internal Medicine or Pediatrics,Allergy & Immunology,1109020F0,2,2,2,2,2,2,2,2,3,3,2,2
+Specialty,U South Florida Morsani COM-Tampa,U South Florida Morsani COM,NOT,Tampa,Tampa,Allergy & Immunology/Internal Medicine or Pediatrics,Allergy & Immunology,1109020F0,2,2,2,2,2,2,2,2,3,3,2,2
 Specialty,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Tampa General,SNHAF,Tampa,Tampa,Colon and Rectal Surgery,Colon and Rectal Surgery,1109060F0,2,2,2,2,1,1,2,2,2,2,2,2
 Specialty,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Tampa General,SNHAF,Tampa,Tampa,Emergency Medical Services,Emergency Medical Services,1109112F0,1,1,1,1,1,1,1,1,1,1,1,1
-Specialty,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Tampa General,SNHAF,Tampa,Tampa,Sports Medicine (Fam Med),Sports Medicine,1109127F0,2,2,2,2,2,2,2,2,2,2,2,2
+Specialty,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Morton Plant,NOT,Tampa,Tampa,Sports Medicine (Fam Med),Sports Medicine,1109127F0,2,2,2,2,2,2,2,2,2,2,2,2
 Specialty,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Tampa General,SNHAF,Tampa,Tampa,Interventional Pulmonology,Interventional Pulmonology,1109138S0,1,1,0,0,0,0,0,0,0,0,0,0
 Specialty,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Tampa General,SNHAF,Tampa,Tampa,Cardiovascular Disease/3 Yrs,Cardiovascular Disease,1109141F0,6,6,7,7,8,8,6,6,5,5,6,6
-Specialty,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Tampa General,SNHAF,Tampa,Tampa,Endocrinology/Clinical,Endocrinology,1109143F0,3,3,3,3,3,3,3,3,3,3,3,3
+Specialty,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-VA,NOT,Tampa,Tampa,Endocrinology/Clinical,Endocrinology,1109143F0,3,3,3,3,3,3,3,3,3,3,3,3
 Specialty,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Tampa General,SNHAF,Tampa,Tampa,Gastroenterology/Clinical,Gastroenterology,1109144F0,4,4,4,4,4,4,4,4,4,4,4,4
 Specialty,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Tampa General,SNHAF,Tampa,Tampa,Infectious Disease,Infectious Disease,1109146F0,6,1,6,3,5,5,6,6,5,5,6,4
 Specialty,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Tampa General,SNHAF,Tampa,Tampa,Nephrology/Clinical,Nephrology,1109148F0,5,5,5,2,4,4,5,4,4,2,5,1
-Specialty,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Tampa General,SNHAF,Tampa,Tampa,Rheumatology,Rheumatology,1109150F0,2,2,2,2,2,2,2,2,2,2,2,2
+Specialty,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-VA,NOT,Tampa,Tampa,Rheumatology,Rheumatology,1109150F0,2,2,2,2,2,2,2,2,2,2,2,2
 Specialty,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Tampa General,SNHAF,Tampa,Tampa,Interventional Cardiology,Interventional Cardiology,1109152S0,2,2,0,0,0,0,0,0,0,0,0,0
 Specialty,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Tampa General,SNHAF,Tampa,Tampa,Clinical Cardiac Electrophysiology,Clinical Cardiac Electrophysiology,1109154S0,1,1,1,1,1,1,1,0,0,0,2,2
-Specialty,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Tampa General,SNHAF,Tampa,Tampa,Hematology and Oncology/Clinical,Hematology and Oncology,1109155F0,11,11,11,11,11,11,11,11,11,11,11,11
+Specialty,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Moffitt,NOT,Tampa,Tampa,Hematology and Oncology/Clinical,Hematology and Oncology,1109155F0,11,11,11,11,11,11,11,11,11,11,11,11
 Specialty,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Tampa General,SNHAF,Tampa,Tampa,Pulmonary/Critical Care 3 yr,Pulmonary Critical Care,1109156F0,6,6,6,6,5,5,5,5,6,6,5,5
 Specialty,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Tampa General,SNHAF,Tampa,Tampa,Pulmonary/Critical Care-CCM Track,Pulmonary Critical Care,1109156F1,0,0,0,0,0,0,1,1,0,0,0,0
 Specialty,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Tampa General,SNHAF,Tampa,Tampa,Adv Heart Failure/Transplant Card,Advanced Heart Failure and Transplant Cardiology,1109159S0,1,0,1,0,1,0,0,0,1,1,1,1
-Specialty,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Tampa General,SNHAF,Tampa,Tampa,Clinical Neurophysiology,Clinical Neurophysiology,1109187F0,3,1,0,0,0,0,0,0,0,0,0,0
+Specialty,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-VA,NOT,Tampa,Tampa,Clinical Neurophysiology,Clinical Neurophysiology,1109187F0,3,1,0,0,0,0,0,0,0,0,0,0
 Specialty,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Tampa General,SNHAF,Tampa,Tampa,Vascular Neurology,Vascular Neurology,1109188F0,1,1,2,2,2,2,2,1,2,2,2,2
 Specialty,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Tampa General,SNHAF,Tampa,Tampa,Pelvic Med and Recon Surg/OB/GYN,Pelvic Medicine and Reconstructive Surgery,1109221F0,1,1,1,1,1,1,0,0,1,1,1,1
-Specialty,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Tampa General,SNHAF,Tampa,Tampa,Gynecologic Oncology,Gynecologic Oncology,1109225F0,0,0,0,0,1,1,1,1,1,1,1,1
-Specialty,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Tampa General,SNHAF,Tampa,Tampa,Gynecologic Oncology/Moffitt,Gynecologic Oncology,1109225F1,1,1,0,0,0,0,0,0,0,0,0,0
+Specialty,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Moffitt,NOT,Tampa,Tampa,Gynecologic Oncology,Gynecologic Oncology,1109225F0,0,0,0,0,1,1,1,1,1,1,1,1
+Specialty,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Moffitt,NOT,Tampa,Tampa,Gynecologic Oncology/Moffitt,Gynecologic Oncology,1109225F1,1,1,0,0,0,0,0,0,0,0,0,0
 Specialty,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Tampa General,SNHAF,Tampa,Tampa,Gynecologic Oncology/TGH,Gynecologic Oncology,1109225F2,1,1,0,0,0,0,0,0,0,0,0,0
 Specialty,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Tampa General,SNHAF,Tampa,Tampa,Maternal-Fetal Medicine,Maternal-Fetal Medicine,1109230F0,1,1,0,0,1,1,1,1,1,1,1,1
-Specialty,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Tampa General,SNHAF,Tampa,Tampa,Reproductive Endocrinology,Reproductive Endocrinology,1109235F0,1,1,1,1,1,1,0,0,1,1,0,0
-Specialty,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Tampa General,SNHAF,Tampa,Tampa,Forensic Pathology,Forensic Pathology,1109310F0,1,1,1,1,0,0,0,0,0,0,0,0
+Specialty,U South Florida Morsani COM-Tampa,U South Florida Morsani COM,NOT,Tampa,Tampa,Reproductive Endocrinology,Reproductive Endocrinology,1109235F0,1,1,1,1,1,1,0,0,1,1,0,0
+Specialty,U South Florida Morsani COM-Tampa,U South Florida Morsani COM,NOT,Tampa,Tampa,Forensic Pathology,Forensic Pathology,1109310F0,1,1,1,1,0,0,0,0,0,0,0,0
 Specialty,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Tampa General,SNHAF,Tampa,Tampa,Neonatal-Perinatal Medicine,Neonatal-Perinatal Medicine,1109329F0,3,3,3,1,2,2,3,3,2,2,2,1
-Specialty,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Tampa General,SNHAF,Tampa,Tampa,Spinal Cord Injury Medicine,Spinal Cord Injury Medicine,1109345F0,0,0,1,0,1,1,1,1,1,0,1,0
-Specialty,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Tampa General,SNHAF,Tampa,Tampa,Addiction Psychiatry,Addiction Psychiatry,1109401F0,0,0,2,0,0,0,0,0,0,0,0,0
-Specialty,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Tampa General,SNHAF,Tampa,Tampa,Child and Adolescent Psychiatry,Child and Adolescent Psychiatry,1109405F0,0,0,0,0,0,0,3,0,3,2,3,2
-Specialty,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Tampa General,SNHAF,Tampa,Tampa,Consultation-Liaison Psychiatry,Consultation-Liaison Psychiatry,1109409F0,2,2,2,1,2,0,0,0,0,0,0,0
-Specialty,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Tampa General,SNHAF,Tampa,Miami,Interventional Radiology/Rad Baptist Miami,Interventional Radiology,1109415F0,7,7,5,4,5,5,4,4,4,4,5,5
+Specialty,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-VA,NOT,Tampa,Tampa,Spinal Cord Injury Medicine,Spinal Cord Injury Medicine,1109345F0,0,0,1,0,1,1,1,1,1,0,1,0
+Specialty,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-VA,NOT,Tampa,Tampa,Addiction Psychiatry,Addiction Psychiatry,1109401F0,0,0,2,0,0,0,0,0,0,0,0,0
+Specialty,U South Florida Morsani COM-Tampa,U South Florida Morsani COM,NOT,Tampa,Tampa,Child and Adolescent Psychiatry,Child and Adolescent Psychiatry,1109405F0,0,0,0,0,0,0,3,0,3,2,3,2
+Specialty,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-VA,NOT,Tampa,Tampa,Consultation-Liaison Psychiatry,Consultation-Liaison Psychiatry,1109409F0,2,2,2,1,2,0,0,0,0,0,0,0
+Specialty,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Baptist Miami,NOT,Tampa,Miami,Interventional Radiology/Rad Baptist Miami,Interventional Radiology,1109415F0,7,7,5,4,5,5,4,4,4,4,5,5
 Specialty,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Tampa General,SNHAF,Tampa,Tampa,Interventional Radiology/Rad Tampa,Interventional Radiology,1109415F1,2,0,2,2,2,1,2,2,2,2,0,0
 Specialty,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Tampa General,SNHAF,Tampa,Tampa,Neuroradiology,Neuroradiology,1109423F0,1,1,1,1,1,1,0,0,0,0,0,0
 Specialty,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Tampa General,SNHAF,Tampa,Tampa,Surgical Critical Care,Surgical Critical Care,1109442F0,3,2,2,2,2,0,2,2,2,2,2,1
-Specialty,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Tampa General,SNHAF,Tampa,Tampa,Surgical Oncology,Surgical Critical Care,1109446F0,5,5,5,5,5,5,4,4,4,4,4,4
+Specialty,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Moffitt,NOT,Tampa,Tampa,Surgical Oncology,Surgical Critical Care,1109446F0,5,5,5,5,5,5,4,4,4,4,4,4
 Specialty,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Tampa General,SNHAF,Tampa,Tampa,Vascular Surgery,Vascular Surgery,1109450F0,0,0,1,1,0,0,1,1,0,0,0,0
 Specialty,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Tampa General,SNHAF,Tampa,Tampa,Sleep Medicine,Sleep Medicine,1109520F0,2,2,2,2,2,2,2,2,2,1,2,2
-Specialty,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Tampa General,SNHAF,Tampa,Tampa,Pain Medicine,Pain Medicine,1109530F0,6,6,6,6,6,6,6,6,6,6,6,6
+Specialty,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-VA,NOT,Tampa,Tampa,Pain Medicine,Pain Medicine,1109530F0,6,6,6,6,6,6,6,6,6,6,6,6
 Specialty,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Tampa General,SNHAF,Tampa,Tampa,Hospice and Palliative Medicine,Hospice and Palliative Medicine,1109540F0,4,2,4,4,4,4,4,4,4,2,4,1
 Specialty,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Tampa General,SNHAF,Tampa,Tampa,Clinical Ultrasound,Clinical Ultrasound,1109E01F0,2,2,2,2,1,1,1,1,1,1,1,1
 Specialty,U South Florida Morsani COM-Tampa,U South Florida Morsani COM-Tampa General,SNHAF,Tampa,Tampa,Interventional Pulmonology,Interventional Pulmonology,1109P49S0,0,0,0,0,0,0,1,1,0,0,0,0
