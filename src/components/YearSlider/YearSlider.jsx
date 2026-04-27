@@ -57,7 +57,7 @@ export default function YearSlider({ minYear, maxYear, value, onChange }) {
         sliderInstance.current = sliderRef.current.noUiSlider;
 
         // Listen for updates
-        sliderInstance.current.on('update', function (values, handle) {
+        sliderInstance.current.on('update', function (values) {
           if (!isUpdating.current) {
             const newRange = values.map((v) => parseInt(v, 10));
             onChange(newRange);

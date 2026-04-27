@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import "./NRMPTable.css";
 import PDFExport from "../PDFExport/PDFExport";
 
-export default function NRMPTable({ data, headers, yearRange, selectedSpecialties, snhafFilter, specialtyFilterRef, setShowAllSelectedSpecialties, sliderComponent }) {
+export default function NRMPTable({ data, yearRange, selectedSpecialties, snhafFilter, specialtyFilterRef, setShowAllSelectedSpecialties, sliderComponent }) {
   const [showYearlyData, setShowYearlyData] = useState(false);
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
   const summaryTableRef = useRef(null);
@@ -11,7 +11,7 @@ export default function NRMPTable({ data, headers, yearRange, selectedSpecialtie
   
   if (!data.length) return <div>Loading table...</div>;
 
-  const years = [2020, 2021, 2022, 2023, 2024, 2025];
+  const years = [2020, 2021, 2022, 2023, 2024, 2025, 2026];
   const inRangeYears = years.filter(y => y >= yearRange[0] && y <= yearRange[1]);
   const yearCols = [];
   inRangeYears.forEach(y => {

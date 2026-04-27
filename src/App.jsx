@@ -6,15 +6,13 @@ import YearSlider from "./components/YearSlider/YearSlider";
 import SpecialtyFilter from "./components/SpecialtyFilter/SpecialtyFilter";
 import SNHAFFilter from "./components/SNHAFFilter/SNHAFFilter";
 
-// Update as appropriate based on your CSV
 const MIN_YEAR = 2020;
-const MAX_YEAR = 2025;
-const CSV_URL = `${import.meta.env.BASE_URL}NRMP_2020_2025_Main_and_Specialty.csv`;
+const MAX_YEAR = 2026;
+const CSV_URL = `${import.meta.env.BASE_URL}NRMP_2020_2026_Main_and_Specialty.csv`;
 
 export default function App() {
   const [yearRange, setYearRange] = useState([MIN_YEAR, MAX_YEAR]);
   const [data, setData] = useState([]);
-  const [headers, setHeaders] = useState([]);
   const [selectedSpecialties, setSelectedSpecialties] = useState([]);
   const [snhafFilter, setSnhafFilter] = useState('ALL'); // 'ALL', 'SNHAF', 'NOT'
   const [dataLoaded, setDataLoaded] = useState(false);
@@ -26,7 +24,6 @@ export default function App() {
       download: true,
       header: true,
       complete: (results) => {
-        setHeaders(results.meta.fields || []);
         setData(results.data);
         
         // Initialize with all specialties unchecked (empty array)
@@ -46,7 +43,7 @@ export default function App() {
       <div style={{ textAlign: 'center', margin: '10px 0 40px 0', position: 'absolute', justifyContent: 'center', alignItems: 'center', width: '1580px' }}>
         <a 
           href={CSV_URL} 
-          download="NRMP_2020_2025_Main_and_Specialty.csv"
+          download="NRMP_2020_2026_Main_and_Specialty.csv"
           style={{
             display: 'inline-flex',
             alignItems: 'center',
@@ -90,7 +87,6 @@ export default function App() {
             </div>
                         <NRMPTable 
             data={data}
-            headers={headers}
             yearRange={yearRange}
             selectedSpecialties={selectedSpecialties}
             snhafFilter={snhafFilter}

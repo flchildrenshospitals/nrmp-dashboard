@@ -283,8 +283,6 @@ const PDFExport = ({ tableRef, filterRef, specialtyFilterRef, tableTitleRef, set
           
           // Calculate the exact pixel range for these rows
           const startY = rowHeights.slice(0, currentRow).reduce((sum, height) => sum + height, 0) * scaleFactor;
-          const endY = startY + accumulatedHeight;
-          
           // Create a temporary canvas for this page's content
           const pageCanvas = document.createElement('canvas');
           pageCanvas.width = bodyCanvas.width;
