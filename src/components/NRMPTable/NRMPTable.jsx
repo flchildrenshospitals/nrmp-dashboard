@@ -245,6 +245,11 @@ export default function NRMPTable({ data, yearRange, selectedSpecialties, snhafF
           <p className="table-subtitle">
             {uniqueInstitutionsCount} sponsoring institutions with a median match rate of {medianMatchPercentage}%.
           </p>
+          {showYearlyData && (
+            <p className="table-subtitle yearly-alignment-note">
+              Yearly breakdown rows align with the institutions in the summary table.
+            </p>
+          )}
         </div>
         <div className="table-actions">
           <PDFExport 
@@ -258,9 +263,9 @@ export default function NRMPTable({ data, yearRange, selectedSpecialties, snhafF
           <button 
             className={`yearly-data-toggle ${showYearlyData ? 'active' : ''}`}
             onClick={() => setShowYearlyData(!showYearlyData)}
-            aria-label={showYearlyData ? "Hide yearly data" : "Show yearly data"}
+            aria-label={showYearlyData ? "Hide yearly breakdown" : "Show yearly breakdown"}
           >
-            <span className="toggle-text">{showYearlyData ? 'Hide' : 'Show'} yearly data</span>
+            <span className="toggle-text">{showYearlyData ? 'Hide' : 'Show'} yearly breakdown</span>
           </button>
         </div>
       </div>
@@ -357,7 +362,7 @@ export default function NRMPTable({ data, yearRange, selectedSpecialties, snhafF
         {/* Yearly Data Table */}
         {showYearlyData && (
           <div className="table-section yearly-section">
-            <div className="nrmp-table-container">
+            <div className="nrmp-table-container yearly-table-container">
               {filteredData.length === 0 ? (
                 <div className="no-data-message">
                   <p>No data found for the selected specialties.</p>
@@ -367,18 +372,19 @@ export default function NRMPTable({ data, yearRange, selectedSpecialties, snhafF
                 <table className="nrmp-table yearly-table">
                   <thead>
                     <tr>
-                      {detailedHeaders.map((col) => {
-                        // Format year headers to put year on first line, type on second line
-                        const parts = col.split(' ');
-                        const year = parts[0];
-                        const type = parts[1];
-                        return (
-                          <th key={col}>
-                            <div>{year}</div>
-                            <div>{type}</div>
-                          </th>
-                        );
-                      })}
+                      {inRangeYears.map((year) => (
+                        <th key={year} className="year-group-header" colSpan={2}>
+                          {year}
+                        </th>
+                      ))}
+                    </tr>
+                    <tr>
+                      {inRangeYears.map((year) => (
+                        <React.Fragment key={year}>
+                          <th className="year-subheader year-start">Quota</th>
+                          <th className="year-subheader">Matched</th>
+                        </React.Fragment>
+                      ))}
                     </tr>
                   </thead>
                   <tbody>

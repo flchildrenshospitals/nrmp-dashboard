@@ -92,9 +92,18 @@ export default function SpecialtyFilter({ data, selectedSpecialties, onSpecialty
   const visibleSelectedCount = visibleSpecialties.filter(specialty =>
     selectedSpecialties.includes(specialty)
   ).length;
+  const isPdfExportView = showAllSelected;
+  const allMainSelected = mainSpecialties.length > 0 &&
+    mainSpecialties.every(specialty => selectedSpecialties.includes(specialty));
+  const allSpecialtySelected = subspecialties.length > 0 &&
+    subspecialties.every(specialty => selectedSpecialties.includes(specialty));
+  const pdfSelectionTakeaways = [
+    allMainSelected ? `All Main specialties selected (${mainSpecialties.length})` : null,
+    allSpecialtySelected ? `All Specialty specialties selected (${subspecialties.length})` : null,
+  ].filter(Boolean);
 
   return (
-    <div className={`specialty-filter-container ${isExpanded ? 'expanded' : ''}`}>
+    <div className={`specialty-filter-container ${isExpanded ? 'expanded' : ''} ${isPdfExportView ? 'pdf-export-view' : ''}`}>
       <div className="specialty-filter-header">
         <div>
           <p className="filter-kicker">Specialty filter</p>
@@ -112,33 +121,37 @@ export default function SpecialtyFilter({ data, selectedSpecialties, onSpecialty
       </div>
       
       <div className={`specialty-filter-content ${isExpanded ? 'expanded' : 'collapsed'}`}>
-        <div className="specialty-filter-toolbar">
-          <label className="specialty-search-label" htmlFor="specialty-search">
-            Search specialties
-          </label>
-          <input
-            id="specialty-search"
-            className="specialty-search-input"
-            type="search"
-            placeholder="Search by specialty name"
-            value={searchTerm}
-            onChange={(event) => setSearchTerm(event.target.value)}
-          />
-        </div>
+        {!isPdfExportView && (
+          <>
+            <div className="specialty-filter-toolbar">
+              <label className="specialty-search-label" htmlFor="specialty-search">
+                Search specialties
+              </label>
+              <input
+                id="specialty-search"
+                className="specialty-search-input"
+                type="search"
+                placeholder="Search by specialty name"
+                value={searchTerm}
+                onChange={(event) => setSearchTerm(event.target.value)}
+              />
+            </div>
 
-        <div className="specialty-group-tabs" aria-label="Specialty groups">
-          {groupOptions.map(group => (
-            <button
-              key={group.id}
-              className={`specialty-group-tab ${activeGroup === group.id ? "active" : ""}`}
-              type="button"
-              onClick={() => setActiveGroup(group.id)}
-            >
-              {group.label}
-              <span>{group.count}</span>
-            </button>
-          ))}
-        </div>
+            <div className="specialty-group-tabs" aria-label="Specialty groups">
+              {groupOptions.map(group => (
+                <button
+                  key={group.id}
+                  className={`specialty-group-tab ${activeGroup === group.id ? "active" : ""}`}
+                  type="button"
+                  onClick={() => setActiveGroup(group.id)}
+                >
+                  {group.label}
+                  <span>{group.count}</span>
+                </button>
+              ))}
+            </div>
+          </>
+        )}
 
         {selectedCount > 0 && (
           <div className="selected-specialties-panel">
@@ -148,6 +161,13 @@ export default function SpecialtyFilter({ data, selectedSpecialties, onSpecialty
                 Clear all
               </button>
             </div>
+            {isPdfExportView && pdfSelectionTakeaways.length > 0 && (
+              <div className="pdf-selection-takeaways">
+                {pdfSelectionTakeaways.map(takeaway => (
+                  <span key={takeaway}>{takeaway}</span>
+                ))}
+              </div>
+            )}
             <div className="selected-specialty-chips">
               {(showAllSelected ? sortedSelectedSpecialties : sortedSelectedSpecialties.slice(0, 8)).map(specialty => (
                 <button
@@ -170,50 +190,54 @@ export default function SpecialtyFilter({ data, selectedSpecialties, onSpecialty
           </div>
         )}
 
-        <div className="specialty-list-header">
-          <p>
-            Showing {visibleSpecialties.length} {visibleSpecialties.length === 1 ? "specialty" : "specialties"}
-            {searchTerm.trim() ? ` matching "${searchTerm.trim()}"` : ""}
-          </p>
-          <div className="specialty-list-actions">
-            <button
-              type="button"
-              onClick={handleSelectVisible}
-              disabled={visibleSpecialties.length === 0 || visibleSelectedCount === visibleSpecialties.length}
-            >
-              Select all
-            </button>
-            <button
-              type="button"
-              onClick={handleClearAll}
-              disabled={selectedCount === 0}
-            >
-              Clear all
-            </button>
+        {!isPdfExportView && (
+          <>
+            <div className="specialty-list-header">
+              <p>
+                Showing {visibleSpecialties.length} {visibleSpecialties.length === 1 ? "specialty" : "specialties"}
+                {searchTerm.trim() ? ` matching "${searchTerm.trim()}"` : ""}
+              </p>
+              <div className="specialty-list-actions">
+                <button
+                  type="button"
+                  onClick={handleSelectVisible}
+                  disabled={visibleSpecialties.length === 0 || visibleSelectedCount === visibleSpecialties.length}
+                >
+                  Select all
+                </button>
+                <button
+                  type="button"
+                  onClick={handleClearAll}
+                  disabled={selectedCount === 0}
+                >
+                  Clear all
+                </button>
+              </div>
           </div>
-        </div>
-        
-        <div className="specialties-grid">
-          {visibleSpecialties.length === 0 ? (
-            <div className="no-specialty-results">
-              No specialties match your search.
+
+            <div className="specialties-grid">
+              {visibleSpecialties.length === 0 ? (
+                <div className="no-specialty-results">
+                  No specialties match your search.
+                </div>
+              ) : (
+                visibleSpecialties.map(specialty => (
+                  <label
+                    key={specialty}
+                    className={`checkbox-label specialty-option ${selectedSpecialties.includes(specialty) ? "selected" : ""}`}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={selectedSpecialties.includes(specialty)}
+                      onChange={() => handleSpecialtyToggle(specialty)}
+                    />
+                    <span>{specialty}</span>
+                  </label>
+                ))
+              )}
             </div>
-          ) : (
-            visibleSpecialties.map(specialty => (
-              <label
-                key={specialty}
-                className={`checkbox-label specialty-option ${selectedSpecialties.includes(specialty) ? "selected" : ""}`}
-              >
-                <input
-                  type="checkbox"
-                  checked={selectedSpecialties.includes(specialty)}
-                  onChange={() => handleSpecialtyToggle(specialty)}
-                />
-                <span>{specialty}</span>
-              </label>
-            ))
-          )}
-        </div>
+          </>
+        )}
       </div>
       
       {!isExpanded && selectedSpecialties.length > 0 && selectedSpecialties.length < uniqueSpecialties.length && (

@@ -196,6 +196,24 @@
   text-decoration: underline;
 }
 
+.pdf-selection-takeaways {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 10px;
+}
+
+.pdf-selection-takeaways span {
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 10px;
+  color: #ffffff;
+  background: var(--dashboard-blue);
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 850;
+}
+
 .selected-specialty-chips {
   display: flex;
   flex-wrap: wrap;
@@ -225,6 +243,21 @@
 .selected-specialty-chip span {
   color: var(--dashboard-muted);
   font-weight: 900;
+}
+
+.pdf-export-view .expand-button,
+.pdf-export-view .selected-specialties-header button,
+.pdf-export-view .selected-specialty-chip span {
+  display: none;
+}
+
+.pdf-export-view .selected-specialty-chip {
+  cursor: default;
+}
+
+.pdf-export-view .selected-specialty-chip:hover {
+  transform: none;
+  box-shadow: none;
 }
 
 .selected-specialty-more {
