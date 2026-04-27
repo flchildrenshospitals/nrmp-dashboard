@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import "./NRMPTable.css";
 import PDFExport from "../PDFExport/PDFExport";
 
-export default function NRMPTable({ data, yearRange, selectedSpecialties, snhafFilter, specialtyFilterRef, setShowAllSelectedSpecialties, sliderComponent }) {
+export default function NRMPTable({ data, yearRange, selectedSpecialties, snhafFilter, specialtyFilterRef, setShowAllSelectedSpecialties, specialtyFilterComponent, sliderComponent }) {
   const [showYearlyData, setShowYearlyData] = useState(false);
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
   const summaryTableRef = useRef(null);
@@ -174,20 +174,79 @@ export default function NRMPTable({ data, yearRange, selectedSpecialties, snhafF
       : matchPercentages[Math.floor(matchPercentages.length / 2)].toFixed(1)
     : "0.0";
 
+  const specialtyLabel = selectedSpecialties.length === 0
+    ? "All specialties"
+    : `${selectedSpecialties.length} selected ${selectedSpecialties.length === 1 ? "specialty" : "specialties"}`;
+
+  const metricCards = [
+    {
+      label: "Sponsoring institutions",
+      value: uniqueInstitutionsCount.toLocaleString(),
+      helper: specialtyLabel,
+    },
+    {
+      label: "Solicited positions",
+      value: totalSolicited.toLocaleString(),
+      helper: `${yearRange[0]}-${yearRange[1]}`,
+    },
+    {
+      label: "Matched positions",
+      value: totalMatched.toLocaleString(),
+      helper: `${totalMatchPercentage}% overall match rate`,
+    },
+    {
+      label: "Not matched",
+      value: totalNotMatched.toLocaleString(),
+      helper: "Solicited minus matched",
+    },
+    {
+      label: "Median match rate",
+      value: `${medianMatchPercentage}%`,
+      helper: "Across visible institutions",
+    },
+  ];
+
   return (
     <div className="nrmp-dashboard-container">
-      {/* Slider Section */}
-      <div className="dashboard-header-section" ref={filterSectionRef}>
-        {sliderComponent}
-      </div>
+      <section className="metric-card-grid" aria-label="Dashboard summary">
+        {metricCards.map((metric) => (
+          <article className="metric-card" key={metric.label}>
+            <p className="metric-label">{metric.label}</p>
+            <p className="metric-value">{metric.value}</p>
+            <p className="metric-helper">{metric.helper}</p>
+          </article>
+        ))}
+      </section>
+
+      <section className="filter-workspace" aria-label="Dashboard filters">
+        <div className="section-heading">
+          <p className="section-kicker">Refine the view</p>
+          <h2>Choose the data you want to compare</h2>
+          <p>
+            Start broad, then narrow by specialty, year range, or institution
+            type. The metrics and table update together.
+          </p>
+        </div>
+        {specialtyFilterComponent}
+        <div className="dashboard-header-section" ref={filterSectionRef}>
+          {sliderComponent}
+        </div>
+      </section>
 
       {/* Table Header with Toggle */}
       <div className="table-header-row">
-        <h3 className="table-title">
-          <span className="title-text" ref={tableTitleRef}>
-            NRMP Data for {selectedSpecialties.length === 0 ? "All" : "Selected"} Specialties ({yearRange[0]} - {yearRange[1]}) - {uniqueInstitutionsCount} Sponsoring Institutions
-            <span className="median-match-stat"> | Median Match Rate: {medianMatchPercentage}%</span>
-          </span>
+        <div className="table-title-group">
+          <p className="section-kicker">Institution detail</p>
+          <h3 className="table-title">
+            <span className="title-text" ref={tableTitleRef}>
+              {specialtyLabel} from {yearRange[0]}-{yearRange[1]}
+            </span>
+          </h3>
+          <p className="table-subtitle">
+            {uniqueInstitutionsCount} sponsoring institutions with a median match rate of {medianMatchPercentage}%.
+          </p>
+        </div>
+        <div className="table-actions">
           <PDFExport 
             tableRef={summaryTableRef} 
             filterRef={filterSectionRef}
@@ -196,15 +255,14 @@ export default function NRMPTable({ data, yearRange, selectedSpecialties, snhafF
             setShowAllSelectedSpecialties={setShowAllSelectedSpecialties}
             filename={`nrmp-summary-${yearRange[0]}-${yearRange[1]}`} 
           />
-        </h3>
-        <button 
-          className={`yearly-data-toggle ${showYearlyData ? 'active' : ''}`}
-          onClick={() => setShowYearlyData(!showYearlyData)}
-          aria-label={showYearlyData ? "Hide yearly data" : "Show yearly data"}
-        >
-          <span className="toggle-icon">{showYearlyData ? '◀' : '▶'}</span>
-          <span className="toggle-text">{showYearlyData ? 'Hide' : 'Show'} Yearly Data</span>
-        </button>
+          <button 
+            className={`yearly-data-toggle ${showYearlyData ? 'active' : ''}`}
+            onClick={() => setShowYearlyData(!showYearlyData)}
+            aria-label={showYearlyData ? "Hide yearly data" : "Show yearly data"}
+          >
+            <span className="toggle-text">{showYearlyData ? 'Hide' : 'Show'} yearly data</span>
+          </button>
+        </div>
       </div>
 
       {/* Tables Container */}
@@ -230,7 +288,7 @@ export default function NRMPTable({ data, yearRange, selectedSpecialties, snhafF
                       
                       // Add sort indicator
                       const getSortIndicator = () => {
-                        if (sortConfig.key !== col) return ' ↕️';
+                        if (sortConfig.key !== col) return ' ↕';
                         return sortConfig.direction === 'asc' ? ' ↑' : ' ↓';
                       };
                       

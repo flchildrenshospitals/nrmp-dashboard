@@ -1,27 +1,35 @@
 .snhaf-filter-container {
-  margin-left: 300px;
-  min-width: 300px;
+  flex: 0 0 auto;
+  min-width: 340px;
+  padding: 18px;
+  background: #ffffff;
+  border: 1px solid var(--dashboard-border);
+  border-radius: 18px;
 }
 
 .snhaf-filter-title {
-  font-size: 18px;
-  font-weight: 700;
-  color: #003366;
-  margin: 0 0 10px 0;
+  font-size: 16px;
+  font-weight: 850;
+  color: var(--dashboard-text);
+  margin: 0 0 12px 0;
   text-align: left;
+  letter-spacing: -0.02em;
 }
 
 .snhaf-filter-options {
   display: flex;
   flex-direction: row;
-  gap: 20px;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 .snhaf-filter-option {
   display: flex;
   align-items: center;
   cursor: pointer;
-  padding: 4px 0;
+  padding: 8px 10px;
+  background: var(--dashboard-soft-bg);
+  border-radius: 999px;
   transition: all 0.2s ease;
 }
 
@@ -34,17 +42,17 @@
 }
 
 .snhaf-option-label {
-  font-size: 18px;
-  color: #333;
+  font-size: 14px;
+  color: var(--dashboard-text);
   cursor: pointer;
-  font-weight: 500;
+  font-weight: 700;
 }
 
 .snhaf-filter-option:hover .snhaf-option-label {
-  color: #003366;
+  color: var(--dashboard-blue);
 }
 
 .snhaf-filter-option input[type="radio"]:checked + .snhaf-option-label {
-  color: #003366;
-  font-weight: 600;
+  color: var(--dashboard-blue);
+  font-weight: 800;
 } 

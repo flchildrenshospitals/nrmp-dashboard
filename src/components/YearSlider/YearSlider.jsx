@@ -91,22 +91,13 @@ export default function YearSlider({ minYear, maxYear, value, onChange }) {
   }, [value]);
 
   return (
-    <div style={{ 
-      width: 500, 
-      margin: "40px 0 0 0", 
-      padding: "0 40px" 
-    }}>
+    <div className="year-slider">
       <div 
         ref={sliderRef} 
-        style={{ marginBottom: "20px" }}
+        className="year-slider-track"
       ></div>
-      <div style={{ 
-        textAlign: "left", 
-        marginTop: 20, 
-        fontWeight: "bold",
-        fontSize: "14px"
-      }}>
-        <strong>Years:</strong> {value[0]} – {value[1]}
+      <div className="year-slider-label">
+        <strong>Year range:</strong> {value[0]} – {value[1]}
       </div>
     </div>
   );

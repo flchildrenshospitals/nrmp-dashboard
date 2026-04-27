@@ -1,34 +1,70 @@
 .dashboard-header {
-    background: linear-gradient(90deg, #003366 70%, #5683c6 100%);
-    color: #fff;
-    padding: 24px 40px 16px 40px;
-    text-align: center;
-    border-radius: 12px;
-    margin: 10px 10px 16px 10px;
-    box-shadow: 0 2px 16px rgba(0,0,0,0.08);
-    width: 1450px;
+  width: 100%;
+  box-sizing: border-box;
+  background:
+    linear-gradient(135deg, rgba(7, 59, 109, 0.95) 0%, rgba(45, 105, 163, 0.9) 62%, rgba(108, 157, 203, 0.88) 100%),
+    radial-gradient(circle at top right, rgba(255, 255, 255, 0.28), transparent 18rem);
+  color: #fff;
+  padding: 42px 46px;
+  text-align: left;
+  border-radius: 28px;
+  margin: 0 0 24px;
+  box-shadow: 0 22px 46px rgba(7, 59, 109, 0.18);
+  overflow: hidden;
+}
+
+.dashboard-header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+}
+
+.dashboard-header-copy {
+  max-width: 760px;
+}
+
+.dashboard-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  margin: 0 0 12px;
+  padding: 6px 12px;
+  color: #d7ecff;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.dashboard-header h1 {
+  margin: 0;
+  max-width: 760px;
+  font-size: clamp(2.4rem, 5vw, 4.4rem);
+  line-height: 0.98;
+  letter-spacing: -0.05em;
+  font-weight: 800;
+}
+
+.dashboard-tagline {
+  margin: 18px 0 0;
+  max-width: 680px;
+  font-size: 1.1rem;
+  color: #eef7ff;
+  opacity: 0.92;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+@media (max-width: 768px) {
+  .dashboard-header {
+    padding: 28px 24px;
   }
-  
-  .dashboard-header h1 {
-    margin: 0;
-    font-size: 2.3rem;
-    letter-spacing: 1.5px;
-    font-weight: 800;
+
+  .dashboard-header-content {
+    flex-direction: column;
+    align-items: flex-start;
   }
-  
-  .dashboard-tagline {
-    margin: 0;
-    font-size: 1.1rem;
-    color: #f3f6fa;
-    opacity: 0.88;
-    font-weight: 400;
-    letter-spacing: 0.3px;
-  }
-  
-  @media (max-width: 768px) {
-    .dashboard-header {
-      margin: 0 0 16px 0;
-      padding: 24px 20px 16px 20px;
-    }
-  }
-  
+}

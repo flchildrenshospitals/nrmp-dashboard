@@ -3,6 +3,8 @@ import "./SpecialtyFilter.css";
 
 export default function SpecialtyFilter({ data, selectedSpecialties, onSpecialtyChange, showAllSelected = false }) {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [activeGroup, setActiveGroup] = useState("ALL");
+  const [searchTerm, setSearchTerm] = useState("");
 
   // Extract unique specialties from data
   const uniqueSpecialties = useMemo(() => {
@@ -36,44 +38,40 @@ export default function SpecialtyFilter({ data, selectedSpecialties, onSpecialty
     return Array.from(specialties).sort();
   }, [data]);
 
-  const handleSelectAll = () => {
-    if (selectedSpecialties.length === uniqueSpecialties.length) {
-      // If all are selected, unselect all
-      onSpecialtyChange([]);
-    } else {
-      // Otherwise, select all
-      onSpecialtyChange(uniqueSpecialties);
+  const groupOptions = useMemo(() => [
+    { id: "ALL", label: "All", count: uniqueSpecialties.length, specialties: uniqueSpecialties },
+    { id: "MAIN", label: "Main", count: mainSpecialties.length, specialties: mainSpecialties },
+    { id: "SPECIALTY", label: "Specialty", count: subspecialties.length, specialties: subspecialties },
+  ], [mainSpecialties, subspecialties, uniqueSpecialties]);
+
+  const visibleSpecialties = useMemo(() => {
+    const selectedGroup = groupOptions.find(group => group.id === activeGroup) || groupOptions[0];
+    const normalizedSearch = searchTerm.trim().toLowerCase();
+
+    if (!normalizedSearch) {
+      return selectedGroup.specialties;
     }
+
+    return selectedGroup.specialties.filter(specialty =>
+      specialty.toLowerCase().includes(normalizedSearch)
+    );
+  }, [activeGroup, groupOptions, searchTerm]);
+
+  const sortedSelectedSpecialties = useMemo(
+    () => [...selectedSpecialties].sort(),
+    [selectedSpecialties]
+  );
+
+  const handleSelectVisible = () => {
+    onSpecialtyChange([...new Set([...selectedSpecialties, ...visibleSpecialties])]);
   };
 
-  const handleSelectAllMain = () => {
-    // Toggle all main specialties
-    const allMainSelected = mainSpecialties.every(specialty => selectedSpecialties.includes(specialty));
-    if (allMainSelected) {
-      // Remove only main specialties that are NOT also in subspecialties
-      // Keep specialties that appear in both categories
-      const mainOnlySpecialties = mainSpecialties.filter(specialty => !subspecialties.includes(specialty));
-      onSpecialtyChange(selectedSpecialties.filter(specialty => !mainOnlySpecialties.includes(specialty)));
-    } else {
-      // Add all main specialties to selection (avoiding duplicates)
-      const newSelection = [...new Set([...selectedSpecialties, ...mainSpecialties])];
-      onSpecialtyChange(newSelection);
-    }
+  const handleClearAll = () => {
+    onSpecialtyChange([]);
   };
 
-  const handleSelectAllSpecialty = () => {
-    // Toggle all subspecialties
-    const allSubspecialtiesSelected = subspecialties.every(specialty => selectedSpecialties.includes(specialty));
-    if (allSubspecialtiesSelected) {
-      // Remove only subspecialties that are NOT also in main specialties
-      // Keep specialties that appear in both categories
-      const specialtyOnlySpecialties = subspecialties.filter(specialty => !mainSpecialties.includes(specialty));
-      onSpecialtyChange(selectedSpecialties.filter(specialty => !specialtyOnlySpecialties.includes(specialty)));
-    } else {
-      // Add all subspecialties to selection (avoiding duplicates)
-      const newSelection = [...new Set([...selectedSpecialties, ...subspecialties])];
-      onSpecialtyChange(newSelection);
-    }
+  const handleRemoveSpecialty = (specialty) => {
+    onSpecialtyChange(selectedSpecialties.filter(s => s !== specialty));
   };
 
   const handleSpecialtyToggle = (specialty) => {
@@ -86,85 +84,160 @@ export default function SpecialtyFilter({ data, selectedSpecialties, onSpecialty
 
   if (uniqueSpecialties.length === 0) return null;
 
+  const selectedCount = selectedSpecialties.length;
+  const allSpecialtiesSelected = selectedCount === uniqueSpecialties.length;
+  const specialtySummary = selectedCount === 0 || allSpecialtiesSelected
+    ? `Showing all ${uniqueSpecialties.length} specialties`
+    : `${selectedCount} of ${uniqueSpecialties.length} specialties selected`;
+  const visibleSelectedCount = visibleSpecialties.filter(specialty =>
+    selectedSpecialties.includes(specialty)
+  ).length;
+
   return (
     <div className={`specialty-filter-container ${isExpanded ? 'expanded' : ''}`}>
       <div className="specialty-filter-header">
-        <h3>Filter by Specialty</h3>
+        <div>
+          <p className="filter-kicker">Specialty filter</p>
+          <h3>Pick specialties to include</h3>
+          <p>{specialtySummary}</p>
+        </div>
         <button 
           className="expand-button" 
           onClick={() => setIsExpanded(!isExpanded)}
           aria-label={isExpanded ? "Collapse filters" : "Expand filters"}
+          aria-expanded={isExpanded}
         >
-          {isExpanded ? "−" : "+"}
+          {isExpanded ? "Hide list" : "Show list"}
         </button>
       </div>
       
       <div className={`specialty-filter-content ${isExpanded ? 'expanded' : 'collapsed'}`}>
-        <div className="select-all-container">
-          <label className="checkbox-label">
-            <input
-              type="checkbox"
-              checked={selectedSpecialties.length === uniqueSpecialties.length}
-              onChange={handleSelectAll}
-            />
-            <span>Select All ({uniqueSpecialties.length})</span>
+        <div className="specialty-filter-toolbar">
+          <label className="specialty-search-label" htmlFor="specialty-search">
+            Search specialties
           </label>
-          
-          <label className="checkbox-label">
-            <input
-              type="checkbox"
-              checked={mainSpecialties.every(specialty => selectedSpecialties.includes(specialty)) && mainSpecialties.length > 0}
-              onChange={handleSelectAllMain}
-            />
-            <span>All Main ({mainSpecialties.length})</span>
-          </label>
-          
-          <label className="checkbox-label">
-            <input
-              type="checkbox"
-              checked={subspecialties.every(specialty => selectedSpecialties.includes(specialty)) && subspecialties.length > 0}
-              onChange={handleSelectAllSpecialty}
-            />
-            <span>All Specialty ({subspecialties.length})</span>
-          </label>
+          <input
+            id="specialty-search"
+            className="specialty-search-input"
+            type="search"
+            placeholder="Search by specialty name"
+            value={searchTerm}
+            onChange={(event) => setSearchTerm(event.target.value)}
+          />
+        </div>
+
+        <div className="specialty-group-tabs" aria-label="Specialty groups">
+          {groupOptions.map(group => (
+            <button
+              key={group.id}
+              className={`specialty-group-tab ${activeGroup === group.id ? "active" : ""}`}
+              type="button"
+              onClick={() => setActiveGroup(group.id)}
+            >
+              {group.label}
+              <span>{group.count}</span>
+            </button>
+          ))}
+        </div>
+
+        {selectedCount > 0 && (
+          <div className="selected-specialties-panel">
+            <div className="selected-specialties-header">
+              <span>{selectedCount} selected</span>
+              <button type="button" onClick={handleClearAll}>
+                Clear all
+              </button>
+            </div>
+            <div className="selected-specialty-chips">
+              {(showAllSelected ? sortedSelectedSpecialties : sortedSelectedSpecialties.slice(0, 8)).map(specialty => (
+                <button
+                  type="button"
+                  className="selected-specialty-chip"
+                  key={specialty}
+                  onClick={() => handleRemoveSpecialty(specialty)}
+                  aria-label={`Remove ${specialty}`}
+                >
+                  {specialty}
+                  <span aria-hidden="true">x</span>
+                </button>
+              ))}
+              {!showAllSelected && selectedCount > 8 && (
+                <span className="selected-specialty-more">
+                  +{selectedCount - 8} more
+                </span>
+              )}
+            </div>
+          </div>
+        )}
+
+        <div className="specialty-list-header">
+          <p>
+            Showing {visibleSpecialties.length} {visibleSpecialties.length === 1 ? "specialty" : "specialties"}
+            {searchTerm.trim() ? ` matching "${searchTerm.trim()}"` : ""}
+          </p>
+          <div className="specialty-list-actions">
+            <button
+              type="button"
+              onClick={handleSelectVisible}
+              disabled={visibleSpecialties.length === 0 || visibleSelectedCount === visibleSpecialties.length}
+            >
+              Select all
+            </button>
+            <button
+              type="button"
+              onClick={handleClearAll}
+              disabled={selectedCount === 0}
+            >
+              Clear all
+            </button>
+          </div>
         </div>
         
         <div className="specialties-grid">
-          {uniqueSpecialties.map(specialty => (
-            <label key={specialty} className="checkbox-label">
-              <input
-                type="checkbox"
-                checked={selectedSpecialties.includes(specialty)}
-                onChange={() => handleSpecialtyToggle(specialty)}
-              />
-              <span>{specialty}</span>
-            </label>
-          ))}
+          {visibleSpecialties.length === 0 ? (
+            <div className="no-specialty-results">
+              No specialties match your search.
+            </div>
+          ) : (
+            visibleSpecialties.map(specialty => (
+              <label
+                key={specialty}
+                className={`checkbox-label specialty-option ${selectedSpecialties.includes(specialty) ? "selected" : ""}`}
+              >
+                <input
+                  type="checkbox"
+                  checked={selectedSpecialties.includes(specialty)}
+                  onChange={() => handleSpecialtyToggle(specialty)}
+                />
+                <span>{specialty}</span>
+              </label>
+            ))
+          )}
         </div>
       </div>
       
       {!isExpanded && selectedSpecialties.length > 0 && selectedSpecialties.length < uniqueSpecialties.length && (
         <div className="filter-summary">
-          {(() => {
-            const sortedSpecialties = [...selectedSpecialties].sort();
-            
-            if (showAllSelected) {
-              // For PDF export, show all selected specialties
-              return sortedSpecialties.join(", ");
-            } else {
-              // For web interface, show truncated version
-              const maxDisplay = 3; // Maximum number of specialties to show
-              const displaySpecialties = sortedSpecialties.slice(0, maxDisplay);
-              const remaining = selectedSpecialties.length - maxDisplay;
-              
-              let text = displaySpecialties.join(", ");
-              if (remaining > 0) {
-                text += ` and ${remaining} more`;
-              }
-              
-              return text;
-            }
-          })()}
+          <span className="filter-summary-label">{selectedCount} selected:</span>
+          <div className="selected-specialty-chips">
+            {(showAllSelected ? sortedSelectedSpecialties : sortedSelectedSpecialties.slice(0, 5)).map(specialty => (
+              <button
+                type="button"
+                className="selected-specialty-chip"
+                key={specialty}
+                onClick={() => handleRemoveSpecialty(specialty)}
+                aria-label={`Remove ${specialty}`}
+              >
+                {specialty}
+                <span aria-hidden="true">x</span>
+              </button>
+            ))}
+            {!showAllSelected && selectedCount > 5 && (
+              <span className="selected-specialty-more">
+                +{selectedCount - 5} more
+              </span>
+            )}
+          </div>
         </div>
       )}
     </div>

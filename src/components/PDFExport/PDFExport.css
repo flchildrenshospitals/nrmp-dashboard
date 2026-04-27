@@ -2,25 +2,25 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 8px 16px;
-  background-color: #003366;
+  padding: 10px 14px;
+  background-color: var(--dashboard-blue);
   color: white;
   border: none;
-  border-radius: 6px;
+  border-radius: 999px;
   cursor: pointer;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 800;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(0, 51, 102, 0.2);
+  box-shadow: 0 10px 22px rgba(7, 59, 109, 0.18);
   white-space: nowrap;
-  min-width: 140px;
+  min-width: 132px;
   justify-content: center;
 }
 
 .pdf-export-btn:hover:not(:disabled) {
-  background-color: #1c4176;
+  background-color: var(--dashboard-blue-hover);
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 51, 102, 0.3);
+  box-shadow: 0 14px 28px rgba(7, 59, 109, 0.22);
 }
 
 .pdf-export-btn:disabled {
