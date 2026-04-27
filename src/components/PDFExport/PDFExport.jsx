@@ -3,6 +3,35 @@ import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import './PDFExport.css';
 
+const getPdfCanvasScale = () => {
+  if (typeof navigator === 'undefined') return 2;
+
+  const userAgent = navigator.userAgent || '';
+  const isSafari = /Safari/i.test(userAgent) && !/Chrome|Chromium|CriOS|Edg|Android/i.test(userAgent);
+  const isIOS = /iPad|iPhone|iPod/.test(userAgent) ||
+    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  const isAndroid = /Android/i.test(userAgent);
+
+  return isSafari || isIOS || isAndroid ? 1 : 2;
+};
+
+const getElementWidth = (element, fallbackWidth = 0) => Math.max(
+  1,
+  Math.ceil(fallbackWidth || 0),
+  Math.ceil(element?.scrollWidth || 0),
+  Math.ceil(element?.offsetWidth || 0),
+  Math.ceil(element?.getBoundingClientRect?.().width || 0)
+);
+
+const getElementHeight = (element) => Math.max(
+  1,
+  Math.ceil(element?.scrollHeight || 0),
+  Math.ceil(element?.offsetHeight || 0),
+  Math.ceil(element?.getBoundingClientRect?.().height || 0)
+);
+
+const hasCanvasArea = (canvas) => canvas && canvas.width > 0 && canvas.height > 0;
+
 const PDFExport = ({ tableRef, filterRef, specialtyFilterRef, tableTitleRef, setShowAllSelectedSpecialties, filename = 'nrmp-summary-report' }) => {
   const [isExporting, setIsExporting] = useState(false);
 
@@ -13,18 +42,21 @@ const PDFExport = ({ tableRef, filterRef, specialtyFilterRef, tableTitleRef, set
     }
 
     setIsExporting(true);
+    let shouldResetSpecialtyExportMode = false;
     
     try {
+      const canvasScale = getPdfCanvasScale();
+
       // Determine the maximum width for consistent filter section widths
       let maxFilterWidth = 0;
       if (specialtyFilterRef && specialtyFilterRef.current) {
-        maxFilterWidth = Math.max(maxFilterWidth, specialtyFilterRef.current.scrollWidth);
+        maxFilterWidth = Math.max(maxFilterWidth, getElementWidth(specialtyFilterRef.current));
       }
       if (filterRef && filterRef.current) {
-        maxFilterWidth = Math.max(maxFilterWidth, filterRef.current.scrollWidth);
+        maxFilterWidth = Math.max(maxFilterWidth, getElementWidth(filterRef.current));
       }
       if (tableTitleRef && tableTitleRef.current) {
-        maxFilterWidth = Math.max(maxFilterWidth, tableTitleRef.current.scrollWidth);
+        maxFilterWidth = Math.max(maxFilterWidth, getElementWidth(tableTitleRef.current));
       }
 
       // First, capture the specialty filter section if available
@@ -33,23 +65,25 @@ const PDFExport = ({ tableRef, filterRef, specialtyFilterRef, tableTitleRef, set
         // Temporarily enable "show all" mode for PDF export
         if (setShowAllSelectedSpecialties) {
           setShowAllSelectedSpecialties(true);
+          shouldResetSpecialtyExportMode = true;
           // Wait a moment for the component to re-render
           await new Promise(resolve => setTimeout(resolve, 100));
         }
         
         specialtyFilterCanvas = await html2canvas(specialtyFilterRef.current, {
-          scale: 2,
+          scale: canvasScale,
           useCORS: true,
           allowTaint: true,
           backgroundColor: '#ffffff',
           logging: false,
-          width: maxFilterWidth,
-          height: specialtyFilterRef.current.scrollHeight,
+          width: getElementWidth(specialtyFilterRef.current, maxFilterWidth),
+          height: getElementHeight(specialtyFilterRef.current),
         });
         
         // Reset back to normal mode
         if (setShowAllSelectedSpecialties) {
           setShowAllSelectedSpecialties(false);
+          shouldResetSpecialtyExportMode = false;
         }
       }
 
@@ -57,13 +91,13 @@ const PDFExport = ({ tableRef, filterRef, specialtyFilterRef, tableTitleRef, set
       let filterCanvas = null;
       if (filterRef && filterRef.current) {
         filterCanvas = await html2canvas(filterRef.current, {
-          scale: 2,
+          scale: canvasScale,
           useCORS: true,
           allowTaint: true,
           backgroundColor: '#ffffff',
           logging: false,
-          width: maxFilterWidth,
-          height: filterRef.current.scrollHeight,
+          width: getElementWidth(filterRef.current, maxFilterWidth),
+          height: getElementHeight(filterRef.current),
         });
       }
 
@@ -71,39 +105,48 @@ const PDFExport = ({ tableRef, filterRef, specialtyFilterRef, tableTitleRef, set
       let tableTitleCanvas = null;
       if (tableTitleRef && tableTitleRef.current) {
         tableTitleCanvas = await html2canvas(tableTitleRef.current, {
-          scale: 2,
+          scale: canvasScale,
           useCORS: true,
           allowTaint: true,
           backgroundColor: '#ffffff',
           logging: false,
-          width: maxFilterWidth,
-          height: tableTitleRef.current.scrollHeight,
+          width: getElementWidth(tableTitleRef.current, maxFilterWidth),
+          height: getElementHeight(tableTitleRef.current),
         });
       }
 
       // Then, capture the table header
       const tableHeader = tableRef.current.querySelector('thead');
+      const tableBody = tableRef.current.querySelector('tbody');
+
+      if (!tableHeader || !tableBody) {
+        throw new Error('Table header or body not found');
+      }
+
       const headerCanvas = await html2canvas(tableHeader, {
-        scale: 2,
+        scale: canvasScale,
         useCORS: true,
         allowTaint: true,
         backgroundColor: '#ffffff',
         logging: false,
-        width: tableHeader.scrollWidth,
-        height: tableHeader.scrollHeight,
+        width: getElementWidth(tableHeader),
+        height: getElementHeight(tableHeader),
       });
 
       // Then capture the table body
-      const tableBody = tableRef.current.querySelector('tbody');
       const bodyCanvas = await html2canvas(tableBody, {
-        scale: 2,
+        scale: canvasScale,
         useCORS: true,
         allowTaint: true,
         backgroundColor: '#ffffff',
         logging: false,
-        width: tableBody.scrollWidth,
-        height: tableBody.scrollHeight,
+        width: getElementWidth(tableBody),
+        height: getElementHeight(tableBody),
       });
+
+      if (!hasCanvasArea(headerCanvas) || !hasCanvasArea(bodyCanvas)) {
+        throw new Error('PDF export failed because table capture was empty');
+      }
 
       // Calculate row heights for smart page breaks
       const tableRows = tableBody.querySelectorAll('tr');
@@ -113,9 +156,9 @@ const PDFExport = ({ tableRef, filterRef, specialtyFilterRef, tableTitleRef, set
       // Calculate PDF dimensions
       const headerImgData = headerCanvas.toDataURL('image/png');
       const bodyImgData = bodyCanvas.toDataURL('image/png');
-      const filterImgData = filterCanvas ? filterCanvas.toDataURL('image/png') : null;
-      const specialtyFilterImgData = specialtyFilterCanvas ? specialtyFilterCanvas.toDataURL('image/png') : null;
-      const tableTitleImgData = tableTitleCanvas ? tableTitleCanvas.toDataURL('image/png') : null;
+      const filterImgData = hasCanvasArea(filterCanvas) ? filterCanvas.toDataURL('image/png') : null;
+      const specialtyFilterImgData = hasCanvasArea(specialtyFilterCanvas) ? specialtyFilterCanvas.toDataURL('image/png') : null;
+      const tableTitleImgData = hasCanvasArea(tableTitleCanvas) ? tableTitleCanvas.toDataURL('image/png') : null;
       
       const pdf = new jsPDF({
         orientation: 'portrait',
@@ -131,9 +174,9 @@ const PDFExport = ({ tableRef, filterRef, specialtyFilterRef, tableTitleRef, set
       const imgWidth = pdfWidth - 20; // 10mm margin on each side
       const headerImgHeight = (headerCanvas.height * imgWidth) / headerCanvas.width;
       const bodyImgHeight = (bodyCanvas.height * imgWidth) / bodyCanvas.width;
-      const filterImgHeight = filterCanvas ? (filterCanvas.height * imgWidth) / filterCanvas.width : 0;
-      const specialtyFilterImgHeight = specialtyFilterCanvas ? (specialtyFilterCanvas.height * imgWidth) / specialtyFilterCanvas.width : 0;
-      const tableTitleImgHeight = tableTitleCanvas ? (tableTitleCanvas.height * imgWidth) / tableTitleCanvas.width : 0;
+      const filterImgHeight = filterImgData ? (filterCanvas.height * imgWidth) / filterCanvas.width : 0;
+      const specialtyFilterImgHeight = specialtyFilterImgData ? (specialtyFilterCanvas.height * imgWidth) / specialtyFilterCanvas.width : 0;
+      const tableTitleImgHeight = tableTitleImgData ? (tableTitleCanvas.height * imgWidth) / tableTitleCanvas.width : 0;
 
       // Document header height reservation (title + date)
       const docHeaderHeight = 40;
@@ -314,6 +357,9 @@ const PDFExport = ({ tableRef, filterRef, specialtyFilterRef, tableTitleRef, set
       console.error('Error generating PDF:', error);
       alert('Error generating PDF. Please try again.');
     } finally {
+      if (shouldResetSpecialtyExportMode && setShowAllSelectedSpecialties) {
+        setShowAllSelectedSpecialties(false);
+      }
       setIsExporting(false);
     }
   };
