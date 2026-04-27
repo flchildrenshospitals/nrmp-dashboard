@@ -55,4 +55,17 @@
 .snhaf-filter-option input[type="radio"]:checked + .snhaf-option-label {
   color: var(--dashboard-blue);
   font-weight: 800;
-} 
+}
+
+@media (max-width: 768px) {
+  .snhaf-filter-container {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+  .snhaf-filter-options {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

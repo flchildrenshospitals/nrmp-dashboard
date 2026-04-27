@@ -425,8 +425,35 @@
 }
 
 @media (max-width: 768px) {
+  .specialty-filter-header {
+    flex-direction: column;
+  }
+
+  .expand-button {
+    width: 100%;
+  }
+
+  .specialty-group-tabs {
+    gap: 8px;
+  }
+
+  .specialty-group-tab {
+    flex: 1 1 120px;
+    justify-content: center;
+  }
+
+  .selected-specialties-panel {
+    padding: 12px;
+  }
+
+  .selected-specialty-chip {
+    max-width: 100%;
+    white-space: normal;
+    text-align: left;
+  }
+
   .specialties-grid {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: 1fr;
     max-height: 300px;
   }
 
@@ -443,4 +470,18 @@
   .specialty-filter-header h3 {
     font-size: 16px;
   }
-} 
+}
+
+@media (max-width: 480px) {
+  .specialty-filter-container {
+    padding: 14px;
+  }
+
+  .specialty-search-input {
+    padding: 12px 14px;
+  }
+
+  .selected-specialties-header {
+    flex-direction: column;
+  }
+}

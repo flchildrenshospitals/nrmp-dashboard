@@ -101,9 +101,10 @@ export default function SpecialtyFilter({ data, selectedSpecialties, onSpecialty
     allMainSelected ? `All Main specialties selected (${mainSpecialties.length})` : null,
     allSpecialtySelected ? `All Specialty specialties selected (${subspecialties.length})` : null,
   ].filter(Boolean);
+  const showExpandedContent = isExpanded || isPdfExportView;
 
   return (
-    <div className={`specialty-filter-container ${isExpanded ? 'expanded' : ''} ${isPdfExportView ? 'pdf-export-view' : ''}`}>
+    <div className={`specialty-filter-container ${showExpandedContent ? 'expanded' : ''} ${isPdfExportView ? 'pdf-export-view' : ''}`}>
       <div className="specialty-filter-header">
         <div>
           <p className="filter-kicker">Specialty filter</p>
@@ -120,7 +121,7 @@ export default function SpecialtyFilter({ data, selectedSpecialties, onSpecialty
         </button>
       </div>
       
-      <div className={`specialty-filter-content ${isExpanded ? 'expanded' : 'collapsed'}`}>
+      <div className={`specialty-filter-content ${showExpandedContent ? 'expanded' : 'collapsed'}`}>
         {!isPdfExportView && (
           <>
             <div className="specialty-filter-toolbar">
@@ -240,7 +241,7 @@ export default function SpecialtyFilter({ data, selectedSpecialties, onSpecialty
         )}
       </div>
       
-      {!isExpanded && selectedSpecialties.length > 0 && selectedSpecialties.length < uniqueSpecialties.length && (
+      {!showExpandedContent && selectedSpecialties.length > 0 && selectedSpecialties.length < uniqueSpecialties.length && (
         <div className="filter-summary">
           <span className="filter-summary-label">{selectedCount} selected:</span>
           <div className="selected-specialty-chips">

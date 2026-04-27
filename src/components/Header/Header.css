@@ -61,10 +61,36 @@
 @media (max-width: 768px) {
   .dashboard-header {
     padding: 28px 24px;
+    border-radius: 22px;
   }
 
   .dashboard-header-content {
     flex-direction: column;
     align-items: flex-start;
+    gap: 22px;
+  }
+
+  .dashboard-header h1 {
+    font-size: clamp(2.1rem, 12vw, 3rem);
+    line-height: 1;
+  }
+
+  .dashboard-tagline {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-header {
+    padding: 24px 18px;
+    border-radius: 18px;
+  }
+
+  .dashboard-eyebrow {
+    font-size: 11px;
+  }
+
+  .dashboard-header h1 {
+    font-size: 2rem;
   }
 }

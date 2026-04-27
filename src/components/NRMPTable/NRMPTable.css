@@ -422,7 +422,7 @@
 
 @media (max-width: 1200px) {
   .metric-card-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .table-header-row {
@@ -438,6 +438,7 @@
   .tables-container {
     flex-direction: column;
     gap: 30px;
+    overflow-x: visible;
   }
   
   .summary-section .nrmp-table-container,
@@ -449,6 +450,7 @@
   
   .yearly-section {
     animation: none;
+    margin-left: 0;
   }
 }
 
@@ -468,10 +470,26 @@
   .table-title {
     font-size: 18px;
   }
+
+  .table-actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
   
   .nrmp-table-container {
     padding: 20px;
-    border-radius: 8px;
+    border-radius: 16px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .summary-section .nrmp-table-container,
+  .yearly-section .nrmp-table-container {
+    width: 100%;
+  }
+
+  .summary-section .nrmp-table {
+    min-width: 760px;
   }
   
   .nrmp-table th,
@@ -489,5 +507,28 @@
   
   .no-data-message {
     padding: 40px 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .filter-workspace {
+    padding: 16px;
+  }
+
+  .metric-card {
+    padding: 18px;
+  }
+
+  .table-header-row {
+    gap: 12px;
+  }
+
+  .yearly-data-toggle,
+  .table-actions .pdf-export-btn {
+    width: 100%;
+  }
+
+  .nrmp-table-container {
+    padding: 14px;
   }
 }
